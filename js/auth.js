@@ -67,10 +67,8 @@ const Auth = {
     }
   },
 
-  // Derive AES Key & HMAC Key from password using PBKDF2
-  deriveKeys(password) {
-    // 100,000 iterations and static salt to make offline brute force extremely expensive
-    const salt = CryptoJS.enc.Utf8.parse("monitoring_salt_2026");
+  // Derive AES Key & HMAC Key from password using PBKDF2 with dynamic salt
+  deriveKeys(password, salt) {
     const derivedBytes = CryptoJS.PBKDF2(password, salt, {
       keySize: 512 / 32, // 16 words = 64 bytes
       iterations: 100000,
@@ -93,9 +91,11 @@ const Auth = {
 
   decryptUrl(password) {
     const encrypted = localStorage.getItem('monitoring_api_url_encrypted');
-    if (!encrypted) return null;
+    const saltHex = localStorage.getItem('monitoring_api_salt');
+    if (!encrypted || !saltHex) return null;
     try {
-      const { aesKeyHex } = this.deriveKeys(password);
+      const salt = CryptoJS.enc.Hex.parse(saltHex);
+      const { aesKeyHex } = this.deriveKeys(password, salt);
       const bytes = CryptoJS.AES.decrypt(encrypted, aesKeyHex);
       const decrypted = bytes.toString(CryptoJS.enc.Utf8);
       if (decrypted && decrypted.startsWith('https://script.google.com/')) {
@@ -125,7 +125,12 @@ const Auth = {
         return;
       }
 
-      const { aesKeyHex, hmacKeyHex } = this.deriveKeys(password);
+      // Generate a random salt for this installation
+      const salt = CryptoJS.lib.WordArray.random(16);
+      const saltHex = salt.toString(CryptoJS.enc.Hex);
+      localStorage.setItem('monitoring_api_salt', saltHex);
+
+      const { aesKeyHex, hmacKeyHex } = this.deriveKeys(password, salt);
       const encrypted = this.encryptUrl(url, aesKeyHex);
       if (encrypted) {
         // Save encrypted URL
@@ -149,7 +154,9 @@ const Auth = {
       // Login Mode
       const decrypted = this.decryptUrl(password);
       if (decrypted) {
-        const { hmacKeyHex } = this.deriveKeys(password);
+        const saltHex = localStorage.getItem('monitoring_api_salt');
+        const salt = CryptoJS.enc.Hex.parse(saltHex);
+        const { hmacKeyHex } = this.deriveKeys(password, salt);
         sessionStorage.setItem('monitoring_session', 'active');
         sessionStorage.setItem('monitoring_key', password);
         sessionStorage.setItem('monitoring_hmac_key', hmacKeyHex);
