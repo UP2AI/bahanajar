@@ -32,7 +32,9 @@ const App = {
     this.checkConfig();
     this.initResizers();
     this.initAutoSync();
-    if (API.isConfigured()) await this.loadData();
+    if (sessionStorage.getItem('monitoring_session') === 'active' && API.isConfigured()) {
+      await this.loadData();
+    }
   },
 
   checkConfig() {
