@@ -32,9 +32,6 @@ const App = {
     this.checkConfig();
     this.initResizers();
     this.initAutoSync();
-    if (sessionStorage.getItem('monitoring_session') === 'active' && API.isConfigured()) {
-      await this.loadData();
-    }
   },
 
   checkConfig() {
@@ -1643,7 +1640,12 @@ const App = {
     
     const key = sessionStorage.getItem('monitoring_key');
     if (key && typeof Auth !== 'undefined') {
-      const encrypted = Auth.encryptUrl(url, key);
+      const salt = CryptoJS.SHA256(url);
+      const saltHex = salt.toString(CryptoJS.enc.Hex);
+      localStorage.setItem('monitoring_api_salt', saltHex);
+
+      const aesKeyHex = Auth.deriveKey(key, salt);
+      const encrypted = Auth.encryptUrl(url, aesKeyHex);
       if (encrypted) {
         localStorage.setItem('monitoring_api_url_encrypted', encrypted);
         localStorage.removeItem('monitoring_api_url');

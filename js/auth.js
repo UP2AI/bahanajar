@@ -1,27 +1,24 @@
 /**
  * Authentication Module
  * Cryptographically secures the static web application
- * Supports multi-user setup by locally encrypting the shared signature key and URL
+ * Uses the security password directly as the SIGNATURE_KEY for maximum simplicity and security
  */
 
 const Auth = {
   // Session validation
   init() {
     const session = sessionStorage.getItem('monitoring_session');
-    const encryptedConfig = localStorage.getItem('monitoring_api_config_encrypted');
+    const encryptedUrl = localStorage.getItem('monitoring_api_url_encrypted');
 
-    if (!encryptedConfig) {
+    if (!encryptedUrl) {
       // First time run setup
       const legacyUrl = localStorage.getItem('monitoring_api_url') || '';
       document.getElementById('login-title').textContent = 'Konfigurasi Awal';
-      document.getElementById('login-subtitle').textContent = 'Masukkan Google Apps Script Web App URL, Signature Key, dan buat password pengaman.';
+      document.getElementById('login-subtitle').textContent = 'Masukkan Google Apps Script Web App URL dan buat password pengaman.';
       document.getElementById('login-setup-fields').classList.remove('hidden');
       if (legacyUrl) {
         document.getElementById('login-setup-url').value = legacyUrl;
       }
-      
-      // Pre-generate a secure random key
-      document.getElementById('login-setup-key-input').value = this.generateRandomKey();
       
       document.getElementById('login-submit-btn').innerHTML = '<span class="material-symbols-outlined text-[20px]">save</span> Simpan & Kunci';
       this.showLogin();
@@ -29,9 +26,9 @@ const Auth = {
     }
 
     if (session === 'active') {
-      const decrypted = this.decryptConfig(sessionStorage.getItem('monitoring_key'));
+      const decrypted = this.decryptUrl(sessionStorage.getItem('monitoring_key'));
       if (decrypted) {
-        API._baseUrl = decrypted.url;
+        API._baseUrl = decrypted;
         this.hideLogin();
         return;
       }
@@ -70,12 +67,7 @@ const Auth = {
     }
   },
 
-  // Generate a random 256-bit cryptographically secure hexadecimal key
-  generateRandomKey() {
-    return CryptoJS.lib.WordArray.random(32).toString(CryptoJS.enc.Hex);
-  },
-
-  // Derive AES-256 Key from password using PBKDF2 with salt
+  // Derive AES-256 Key from password using PBKDF2 with dynamic salt
   deriveKey(password, salt) {
     const derivedBytes = CryptoJS.PBKDF2(password, salt, {
       keySize: 256 / 32, // 8 words = 32 bytes = 256 bits
@@ -85,29 +77,25 @@ const Auth = {
     return derivedBytes.toString(CryptoJS.enc.Hex);
   },
 
-  encryptConfig(configObj, aesKeyHex) {
+  encryptUrl(url, aesKeyHex) {
     try {
-      const plaintext = JSON.stringify(configObj);
-      return CryptoJS.AES.encrypt(plaintext, aesKeyHex).toString();
+      return CryptoJS.AES.encrypt(url.trim(), aesKeyHex).toString();
     } catch (e) {
       return null;
     }
   },
 
-  decryptConfig(password) {
-    const encrypted = localStorage.getItem('monitoring_api_config_encrypted');
+  decryptUrl(password) {
+    const encrypted = localStorage.getItem('monitoring_api_url_encrypted');
     const saltHex = localStorage.getItem('monitoring_api_salt');
     if (!encrypted || !saltHex) return null;
     try {
       const salt = CryptoJS.enc.Hex.parse(saltHex);
       const aesKeyHex = this.deriveKey(password, salt);
       const bytes = CryptoJS.AES.decrypt(encrypted, aesKeyHex);
-      const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
-      if (decryptedText) {
-        const config = JSON.parse(decryptedText);
-        if (config && config.url && config.signatureKey) {
-          return config;
-        }
+      const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+      if (decrypted && decrypted.startsWith('https://script.google.com/')) {
+        return decrypted;
       }
     } catch (e) {}
     return null;
@@ -123,61 +111,59 @@ const Auth = {
       return;
     }
 
-    const encryptedConfig = localStorage.getItem('monitoring_api_config_encrypted');
+    const encryptedUrl = localStorage.getItem('monitoring_api_url_encrypted');
 
-    if (!encryptedConfig) {
+    if (!encryptedUrl) {
       // Setup Mode
       const url = document.getElementById('login-setup-url').value.trim();
-      const signatureKey = document.getElementById('login-setup-key-input').value.trim();
 
       if (!url || !url.startsWith('https://script.google.com/')) {
         this.showError('Masukkan URL Google Apps Script yang valid');
         return;
       }
-      if (!signatureKey || signatureKey.length < 16) {
-        this.showError('Masukkan Signature Key yang valid (minimal 16 karakter)');
+      if (password.length < 6) {
+        this.showError('Password harus minimal 6 karakter');
         return;
       }
 
-      // Generate a random salt for this local browser installation
-      const salt = CryptoJS.lib.WordArray.random(16);
+      // Generate dynamic salt from the Apps Script URL
+      const salt = CryptoJS.SHA256(url);
       const saltHex = salt.toString(CryptoJS.enc.Hex);
       localStorage.setItem('monitoring_api_salt', saltHex);
 
       const aesKeyHex = this.deriveKey(password, salt);
-      const configObj = { url, signatureKey };
-      const encrypted = this.encryptConfig(configObj, aesKeyHex);
+      const encrypted = this.encryptUrl(url, aesKeyHex);
 
       if (encrypted) {
-        // Save encrypted config in localStorage
-        localStorage.setItem('monitoring_api_config_encrypted', encrypted);
+        // Save encrypted URL in localStorage
+        localStorage.setItem('monitoring_api_url_encrypted', encrypted);
         
-        // Remove legacy plaintext fields if present
+        // Remove legacy fields if present
         localStorage.removeItem('monitoring_api_url');
-        localStorage.removeItem('monitoring_api_url_encrypted');
+        localStorage.removeItem('monitoring_api_config_encrypted');
         
         // Hold values temporarily in memory to complete setup wizard
-        this._tempSetup = { password, url, signatureKey };
+        this._tempSetup = { password, url };
 
         // Show configuration instructions overlay
         document.getElementById('login-title').textContent = 'Hubungkan Backend';
         document.getElementById('login-subtitle').textContent = 'Pasang Signature Key ini di Google Apps Script Anda.';
         document.getElementById('login-fields-container').classList.add('hidden');
         
-        document.getElementById('login-setup-key').value = signatureKey;
+        document.getElementById('login-setup-key').value = password;
         document.getElementById('login-setup-success').classList.remove('hidden');
       } else {
-        this.showError('Gagal mengenkripsi konfigurasi');
+        this.showError('Gagal mengenkripsi URL database');
       }
     } else {
       // Login Mode
-      const decrypted = this.decryptConfig(password);
+      const decrypted = this.decryptUrl(password);
       if (decrypted) {
         sessionStorage.setItem('monitoring_session', 'active');
         sessionStorage.setItem('monitoring_key', password);
-        sessionStorage.setItem('monitoring_hmac_key', decrypted.signatureKey);
+        sessionStorage.setItem('monitoring_hmac_key', password); // Password IS the signature key
         
-        API._baseUrl = decrypted.url;
+        API._baseUrl = decrypted;
         this.hideLogin();
         UI.showToast('Login berhasil!', 'success');
       } else {
@@ -196,10 +182,10 @@ const Auth = {
 
   completeSetup() {
     if (this._tempSetup) {
-      const { password, url, signatureKey } = this._tempSetup;
+      const { password, url } = this._tempSetup;
       sessionStorage.setItem('monitoring_session', 'active');
       sessionStorage.setItem('monitoring_key', password);
-      sessionStorage.setItem('monitoring_hmac_key', signatureKey);
+      sessionStorage.setItem('monitoring_hmac_key', password);
       API._baseUrl = url;
       this._tempSetup = null;
       this.hideLogin();
@@ -223,6 +209,7 @@ const Auth = {
 
   resetSecuritySettings() {
     if (confirm('Apakah Anda yakin ingin mereset seluruh setelan keamanan? Tindakan ini akan menghapus database terenkripsi dan mengharuskan Anda melakukan setup ulang.')) {
+      localStorage.removeItem('monitoring_api_url_encrypted');
       localStorage.removeItem('monitoring_api_config_encrypted');
       localStorage.removeItem('monitoring_api_salt');
       sessionStorage.clear();

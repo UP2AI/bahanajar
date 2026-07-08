@@ -1206,20 +1206,13 @@
                     <label class="font-label-md text-label-md text-on-surface">Google Apps Script Web App URL</label>
                     <input type="text" id="login-setup-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full rounded-lg border-outline focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface px-4 py-2.5 text-body-md shadow-sm transition-all" />
                 </div>
-                <div class="flex flex-col gap-1.5">
-                    <div class="flex justify-between items-center">
-                        <label class="font-label-md text-label-md text-on-surface">Signature Key (SIGNATURE_KEY)</label>
-                        <button onclick="document.getElementById('login-setup-key-input').value = Auth.generateRandomKey()" class="text-xs text-primary hover:text-primary-container transition-colors font-semibold flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px] align-middle">autorenew</span> Generate</button>
-                    </div>
-                    <input type="text" id="login-setup-key-input" placeholder="Masukkan atau generate signature key..." class="w-full rounded-lg border-outline focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface px-4 py-2.5 text-body-md shadow-sm transition-all font-mono text-xs" />
-                </div>
             </div>
 
             <div class="flex flex-col gap-4 text-left">
                 <div class="flex flex-col gap-1.5">
-                    <label class="font-label-md text-label-md text-on-surface">Password</label>
+                    <label class="font-label-md text-label-md text-on-surface">Password Keamanan</label>
                     <div class="relative">
-                        <input type="password" id="login-password" placeholder="Masukkan password..." class="w-full rounded-lg border-outline focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface pl-4 pr-12 py-3 text-body-md shadow-sm transition-all" onkeydown="if(event.key === 'Enter') Auth.submit()" />
+                        <input type="password" id="login-password" placeholder="Buat password keamanan baru..." class="w-full rounded-lg border-outline focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface pl-4 pr-12 py-3 text-body-md shadow-sm transition-all" onkeydown="if(event.key === 'Enter') Auth.submit()" />
                         <button onclick="Auth.togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center">
                             <span class="material-symbols-outlined text-[20px]" id="password-toggle-icon">visibility</span>
                         </button>
@@ -1241,12 +1234,12 @@
                 <span class="material-symbols-outlined text-primary">key</span>
                 <div>
                     <h3 class="font-semibold text-sm text-primary">Koneksi Aman Terbentuk!</h3>
-                    <p class="text-xs text-on-surface-variant mt-1">Gunakan kunci tanda tangan digital (SIGNATURE_KEY) di bawah ini untuk backend Google Apps Script Anda.</p>
+                    <p class="text-xs text-on-surface-variant mt-1">Gunakan Password Anda sebagai kunci tanda tangan digital (SIGNATURE_KEY) untuk Google Apps Script Anda.</p>
                 </div>
             </div>
             
             <div class="flex flex-col gap-1.5">
-                <label class="font-label-md text-label-md text-on-surface">Signature Key (SIGNATURE_KEY)</label>
+                <label class="font-label-md text-label-md text-on-surface">Signature Key (Gunakan Password Anda)</label>
                 <div class="relative">
                     <textarea id="login-setup-key" readonly rows="2" class="w-full rounded-lg border-outline bg-surface-container-low px-4 py-2.5 text-xs font-mono shadow-sm resize-none"></textarea>
                     <button onclick="Auth.copyKey()" class="absolute right-2 bottom-2 bg-primary text-on-primary px-3 py-1 rounded text-[11px] font-semibold hover:bg-primary-container hover:text-on-primary-container transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">content_copy</span> Copy</button>
@@ -1259,7 +1252,7 @@
                 <span>2. Buka **Project Settings** (ikon roda gigi di kiri).</span>
                 <span>3. Klik **Add Script Property** di bawah halaman.</span>
                 <span>4. Set nama property: <code class="bg-surface px-1 py-0.5 rounded font-mono text-[11px]">SIGNATURE_KEY</code></span>
-                <span>5. Paste kunci di atas sebagai value, klik **Save**.</span>
+                <span>5. Paste **Password Anda** (kunci di atas) sebagai value, klik **Save**.</span>
             </div>
 
             <button onclick="Auth.completeSetup()" class="w-full bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-all py-3 rounded-lg font-semibold shadow-md flex items-center justify-center gap-2">
