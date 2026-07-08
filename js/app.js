@@ -118,6 +118,16 @@ const App = {
     UI.setLoading('table-container', true);
     try {
       this.data = await API.fetchAll();
+      
+      // Calculate dynamic similarity scores on load to keep values live and consistent
+      if (Array.isArray(this.data) && typeof Utils !== 'undefined' && typeof Utils.findMaxSimilarity === 'function') {
+        const titles = this.data.map(item => ({ ID: item.ID, JUDUL: item.JUDUL }));
+        this.data.forEach(item => {
+          const { maxSimilarity } = Utils.findMaxSimilarity(item.JUDUL, titles, item.ID);
+          item.SIMILARITY = maxSimilarity;
+        });
+      }
+
       this.applyFilters();
       UI.updateStats(this.data);
       UI.updateSyncTime();
