@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Monitoring Bahan Ajar - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error-container": "#93000a",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c0c8cb",
+                      "surface-bright": "#f7f9fb",
+                      "on-secondary-fixed-variant": "#38485d",
+                      "on-primary-container": "#87bbce",
+                      "tertiary-fixed": "#ffdcbe",
+                      "surface": "#f7f9fb",
+                      "on-tertiary": "#ffffff",
+                      "surface-container": "#eceef0",
+                      "on-secondary": "#ffffff",
+                      "surface-variant": "#e0e3e5",
+                      "error": "#ba1a1a",
+                      "on-background": "#191c1e",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-primary": "#9acee1",
+                      "on-primary-fixed-variant": "#114d5d",
+                      "secondary-fixed": "#d3e4fe",
+                      "surface-dim": "#d8dadc",
+                      "background": "#f7f9fb",
+                      "primary-fixed": "#b6ebfe",
+                      "secondary": "#505f76",
+                      "on-surface": "#191c1e",
+                      "secondary-fixed-dim": "#b7c8e1",
+                      "surface-container-highest": "#e0e3e5",
+                      "on-primary-fixed": "#001f28",
+                      "secondary-container": "#d0e1fb",
+                      "inverse-on-surface": "#eff1f3",
+                      "surface-container-low": "#f2f4f6",
+                      "primary-fixed-dim": "#9acee1",
+                      "on-secondary-container": "#54647a",
+                      "tertiary-container": "#623d13",
+                      "on-secondary-fixed": "#0b1c30",
+                      "primary-container": "#0f4c5c",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed-dim": "#f3bc87",
+                      "outline": "#70787c",
+                      "primary": "#003441",
+                      "on-tertiary-fixed-variant": "#643e14",
+                      "inverse-surface": "#2d3133",
+                      "tertiary": "#482700",
+                      "on-tertiary-fixed": "#2c1600",
+                      "surface-tint": "#306576",
+                      "on-error": "#ffffff",
+                      "surface-container-high": "#e6e8ea",
+                      "on-surface-variant": "#40484b",
+                      "on-tertiary-container": "#dda975"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-page": "2rem",
+                      "stack-sm": "0.5rem",
+                      "gutter": "1.5rem",
+                      "stack-lg": "2rem",
+                      "container-max": "1440px",
+                      "stack-md": "1rem"
+              },
+              "fontFamily": {
+                      "stat-value": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-sm": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-md": ["Inter"]
+              },
+              "fontSize": {
+                      "stat-value": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                      "label-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "display-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    </script>
+
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .icon-fill { font-variation-settings: 'FILL' 1; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.2s ease-out forwards;
+        }
+
+        textarea::-webkit-scrollbar, .overflow-x-auto::-webkit-scrollbar { width: 8px; height: 8px; }
+        textarea::-webkit-scrollbar-track, .overflow-x-auto::-webkit-scrollbar-track { background: #f2f4f6; border-radius: 4px; }
+        textarea::-webkit-scrollbar-thumb, .overflow-x-auto::-webkit-scrollbar-thumb { background: #c0c8cb; border-radius: 4px; }
+        textarea::-webkit-scrollbar-thumb:hover, .overflow-x-auto::-webkit-scrollbar-thumb:hover { background: #70787c; }
+
+        .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); z-index: 40; }
+        .modal-backdrop.active { display: block; }
+        
+        .modal { display: none; position: fixed; inset: 0; z-index: 50; padding: 1rem; }
+        .modal.active { display: flex; justify-content: center; align-items: center; }
+        .modal-content { max-height: 90vh; display: flex; flex-direction: column; width: 100%; }
+
+        .table-input { border: none; background: transparent; width: 100%; height: 100%; padding: 8px; font-family: 'Inter', sans-serif; font-size: 14px; color: #191c1e; }
+        .table-input:focus { outline: none; background-color: #f7f9fb; }
+        .table-cell-border { border-right: 1px solid #e0e3e5; border-bottom: 1px solid #e0e3e5; }
+        
+        .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+        .toast { padding: 12px 16px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 8px; color: #fff; font-size: 14px; animation: slideIn 0.3s ease-out; }
+        .toast.removing { animation: fadeOut 0.3s ease-out; }
+        .toast--success { background-color: #0f4c5c; }
+        .toast--error { background-color: #ba1a1a; }
+        .toast--warning { background-color: #b36b00; }
+        .toast--info { background-color: #505f76; }
+        
+        .loading-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.7); z-index: 20; display: none; align-items: center; justify-content: center; }
+        .loading-overlay.active { display: flex; }
+        .spinner { width: 32px; height: 32px; border: 3px solid #e0e3e5; border-top-color: #0f4c5c; border-radius: 50%; animation: spin 1s linear infinite; }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { to { opacity: 0; } }
+
+        .empty-state { text-align: center; padding: 48px; color: #70787c; }
+        .empty-state .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+        
+        /* Needed for UI JS logic */
+        .checkbox-item.checked .prodi-check { display: inline; }
+        .checkbox-item .prodi-check { display: none; }
+        
+        select {
+          appearance: none !important;
+          -webkit-appearance: none !important;
+          -moz-appearance: none !important;
+          background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23505f76' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E") !important;
+          background-position: right 0.75rem center !important;
+          background-repeat: no-repeat !important;
+          background-size: 1rem 1rem !important;
+          padding-right: 2.25rem !important;
+        }
+
+        .prodi-chip {
+          display: inline-block;
+          background-color: #d3e4fe;
+          color: #0b1c30;
+          font-size: 11px;
+          font-weight: 500;
+          padding: 2px 6px;
+          border-radius: 4px;
+          margin-right: 2px;
+          margin-bottom: 2px;
+          border: 1px solid #b7c8e1;
+        }
+
+        .bulk-prodi-dropdown {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          background: white;
+          border: 1px solid #e0e3e5;
+          z-index: 100;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          max-height: 240px;
+          overflow-y: auto;
+          min-width: 12rem;
+        }
+        .bulk-prodi-dropdown.active { display: block; }
+        .bulk-row-error { background-color: #ffdad6 !important; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased flex min-h-screen">
+<div id="app-container" class="flex flex-1 min-h-screen hidden">
+<aside id="sidebar" class="bg-surface-container-lowest border-r border-outline-variant shadow-sm docked fixed left-0 top-0 h-full w-[260px] flex flex-col py-stack-lg gap-stack-md z-20 transition-transform duration-300 transform -translate-x-full">
+<div class="px-6 mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary text-on-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined icon-fill">monitoring</span>
+</div>
+<div>
+<h1 class="font-display-lg text-display-lg font-black text-primary tracking-tight" style="font-size: 24px; line-height: 28px;">Simon</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Monitoring System</p>
+</div>
+</div>
+</div>
+<div class="px-4 mb-4">
+<button onclick="App.openAddModal()" class="w-full bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-colors py-2.5 px-4 rounded-lg font-label-md text-label-md flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                Tambah Data
+            </button>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a id="nav-dashboard" onclick="App.switchTab('dashboard')" class="nav-link bg-secondary-container text-on-secondary-container rounded-lg mx-2 flex items-center gap-3 px-4 py-3 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a id="nav-bahan-ajar" onclick="App.switchTab('bahan-ajar')" class="nav-link text-on-surface-variant hover:bg-surface-container-high mx-2 rounded-lg flex items-center gap-3 px-4 py-3 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-md text-label-md">Bahan Ajar</span>
+</a>
+<a id="nav-laporan" onclick="App.switchTab('laporan')" class="nav-link text-on-surface-variant hover:bg-surface-container-high mx-2 rounded-lg flex items-center gap-3 px-4 py-3 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-label-md text-label-md">Laporan</span>
+</a>
+<a id="nav-tim-penulis" onclick="App.switchTab('tim-penulis')" class="nav-link text-on-surface-variant hover:bg-surface-container-high mx-2 rounded-lg flex items-center gap-3 px-4 py-3 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-md text-label-md">Tim Penulis</span>
+</a>
+<a id="nav-pengaturan" onclick="App.switchTab('pengaturan')" class="nav-link text-on-surface-variant hover:bg-surface-container-high mx-2 rounded-lg flex items-center gap-3 px-4 py-3 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Pengaturan</span>
+</a>
+</nav>
+<div class="px-2 mt-auto border-t border-surface-variant pt-4 space-y-1">
+<a class="text-on-surface-variant hover:bg-surface-container-high mx-2 rounded-lg flex items-center gap-3 px-4 py-3 transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Bantuan</span>
+</a>
+<a class="text-error hover:bg-error-container mx-2 rounded-lg flex items-center gap-3 px-4 py-3 transition-colors cursor-pointer" onclick="Auth.logout()">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Keluar</span>
+</a>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-h-screen min-w-0">
+<header class="bg-surface sticky top-0 z-10 flex justify-between items-center w-full px-margin-page py-4 border-b border-surface-variant flat no shadows">
+<div class="flex items-center gap-4">
+<button onclick="UI.toggleSidebar()" class="p-2 -ml-2 rounded-full hover:bg-surface-container transition-colors flex items-center justify-center mr-2" aria-label="Toggle Sidebar"><span class="material-symbols-outlined">menu</span></button><div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Monitoring Bahan Ajar</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">PKN STAN — Sistem Informasi Monitoring</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-surface-variant text-primary">
+<div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+<span class="font-label-md text-label-md text-xs"><span id="last-sync">Sync: -</span></span>
+</div>
+<button class="bg-surface-container hover:bg-surface-container-high px-4 py-2 rounded-full font-label-md text-label-md text-on-surface transition-colors">
+                    PKN STAN
+                </button>
+<button onclick="UI.openModal('modal-setup')" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors" title="Pengaturan Database">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button onclick="Auth.logout()" class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-outline-variant bg-surface hover:bg-error-container hover:text-error hover:border-error/20 transition-all group cursor-pointer" title="Keluar dari sistem">
+<div class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-error/10 group-hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[16px] icon-fill">account_circle</span>
+</div>
+<span class="font-label-md text-label-md text-xs text-on-surface-variant group-hover:text-error transition-colors font-medium">Keluar</span>
+</button>
+</div>
+</header>
+<div class="p-margin-page flex-1 w-full flex flex-col gap-6">
+
+<div id="config-banner" style="display:none;" class="bg-error-container text-on-error-container p-4 rounded-xl shadow-sm border border-error/20 flex gap-4 items-start mb-6">
+    <span class="material-symbols-outlined text-error">error</span>
+    <div>
+        <p class="font-body-md text-body-md"><strong>Konfigurasi Diperlukan!</strong> Hubungkan Google Sheets sebagai database. Klik tombol di bawah untuk memasukkan URL Google Apps Script Web App.</p>
+        <button class="mt-2 bg-error text-on-error px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-[#93000a] transition-colors" onclick="UI.openModal('modal-setup')">Hubungkan</button>
+    </div>
+</div>
+<div id="view-dashboard" class="tab-view flex flex-col gap-6 animate-fadeIn">
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Bahan Ajar</span>
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined icon-fill">menu_book</span>
+</div>
+</div>
+<div>
+<div class="font-stat-value text-stat-value text-on-surface" id="stat-total">61</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1"><span id="stat-total-sub">61 bahan ajar terdaftar</span></p>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-md text-label-md text-on-surface-variant">Selesai 100%</span>
+<div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
+<span class="material-symbols-outlined icon-fill">check_circle</span>
+</div>
+</div>
+<div>
+<div class="font-stat-value text-stat-value text-on-surface" id="stat-complete">9</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1"><span id="stat-complete-sub">dari 61 total</span></p>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-md text-label-md text-on-surface-variant">Dalam Proses</span>
+<div class="w-10 h-10 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center">
+<span class="material-symbols-outlined icon-fill">schedule</span>
+</div>
+</div>
+<div>
+<div class="font-stat-value text-stat-value text-on-surface" id="stat-process">1</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1"><span id="stat-process-sub">sedang berjalan</span></p>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-md text-label-md text-on-surface-variant">Rata-rata</span>
+<div class="w-10 h-10 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center">
+<span class="material-symbols-outlined icon-fill">bar_chart</span>
+</div>
+</div>
+<div>
+<div class="font-stat-value text-stat-value text-on-surface" id="stat-average">16%</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1"><span id="stat-average-sub">rata-rata penyelesaian</span></p>
+</div>
+</div>
+</section>
+<section class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant p-4 flex flex-wrap gap-4 items-center justify-between">
+<div class="flex flex-1 flex-wrap gap-4 items-center">
+<div class="relative min-w-[280px] flex-1 max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline" id="search-input" placeholder="Cari judul, tim penyusun, catatan..." type="text"/>
+</div>
+<select id="filter-jenis" class="py-2 pl-4 pr-10 bg-surface border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none cursor-pointer">
+    <option value="">Semua Jenis</option>
+    <option value="Buku Ajar">Buku Ajar</option>
+    <option value="Modul Praktikum">Modul Praktikum</option>
+    <option value="Buku Referensi">Buku Referensi</option>
+    <option value="Modul Ajar">Modul Ajar</option>
+</select>
+<select id="filter-progress" class="py-2 pl-4 pr-10 bg-surface border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none cursor-pointer"><option value="">Semua Progress</option><option value="Selesai">Selesai</option><option value="Proses Pengerjaan">Proses Pengerjaan</option><option value="Usulan Baru">Usulan Baru</option><option value="Drop">Drop</option></select>
+<select id="filter-nd" class="py-2 pl-4 pr-10 bg-surface border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none cursor-pointer"><option value="">Semua ND</option><option value="Kirim">Kirim</option><option value="Dalam Proses">Dalam Proses</option><option value="Belum">Belum</option><option value="Tanpa Honor">Tanpa Honor</option></select>
+<select id="filter-prodi" class="py-2 pl-4 pr-10 bg-surface border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none cursor-pointer"><option value="">Semua Prodi</option><option value="ASP">ASP</option><option value="MAP">MAP</option><option value="MKN">MKN</option><option value="Akuntansi">Akuntansi</option><option value="Pajak">Pajak</option><option value="Bea dan Cukai">Bea dan Cukai</option><option value="Penilai/PBB">Penilai/PBB</option><option value="Manajemen Aset">Manajemen Aset</option><option value="Kebendaharaan Negara">Kebendaharaan Negara</option></select>
+</div>
+<div class="flex items-center gap-3">
+<button onclick="App.clearFilters()" class="flex items-center gap-2 px-4 py-2 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm">restart_alt</span> Reset
+                    </button>
+<button onclick="App.refreshData()" class="flex items-center gap-2 px-4 py-2 border border-outline-variant bg-surface rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm">refresh</span> Refresh
+                    </button>
+<button onclick="App.exportCSV()" class="flex items-center gap-2 px-4 py-2 border border-outline-variant bg-surface rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm">download</span> Export
+                    </button>
+<button id="btn-add-data" onclick="App.openAddModal()" class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">add</span> Tambah Data
+                    </button>
+</div>
+</section>
+<section class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant overflow-hidden flex flex-col">
+<div class="p-4 border-b border-surface-variant flex justify-between items-center bg-surface-bright">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">list_alt</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Daftar Bahan Ajar</h3>
+</div>
+<div class="bg-surface-container px-3 py-1 rounded-full font-label-md text-label-md text-xs text-on-surface-variant">
+                        <span id="table-count">61 Total Data</span>
+                    </div>
+</div>
+<div class="overflow-x-auto" id="table-container">
+<table id="data-table" class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-xs sticky top-0">
+<tr class="text-xs">
+<th class="px-6 py-4 border-b border-surface-variant font-medium w-12">#</th>
+<th data-sort="JUDUL" onclick="App.sortBy('JUDUL')" class="px-6 py-4 border-b border-surface-variant font-medium cursor-pointer hover:bg-surface-variant min-w-[280px]">Bahan Ajar <span class="material-symbols-outlined text-[10px] align-middle">unfold_more</span></th>
+<th data-sort="SIMILARITY" onclick="App.sortBy('SIMILARITY')" class="px-6 py-4 border-b border-surface-variant font-medium cursor-pointer hover:bg-surface-variant text-center w-24">Sim. <span class="material-symbols-outlined text-[10px] align-middle">unfold_more</span></th>
+<th data-sort="PERSENTASE_PENYELESAIAN" onclick="App.sortBy('PERSENTASE_PENYELESAIAN')" class="px-6 py-4 border-b border-surface-variant font-medium cursor-pointer hover:bg-surface-variant min-w-[180px]">Status Penulisan & ND Honor <span class="material-symbols-outlined text-[10px] align-middle">unfold_more</span></th>
+<th data-sort="TOTAL_HONOR" onclick="App.sortBy('TOTAL_HONOR')" class="px-6 py-4 border-b border-surface-variant font-medium cursor-pointer hover:bg-surface-variant min-w-[160px]">Total Honor diajukan <span class="material-symbols-outlined text-[10px] align-middle">unfold_more</span></th>
+<th class="px-6 py-4 border-b border-surface-variant font-medium min-w-[160px]">Terbit & SK</th>
+<th class="px-6 py-4 border-b border-surface-variant font-medium max-w-[150px]">Catatan</th>
+<th class="px-6 py-4 border-b border-surface-variant font-medium text-center w-28">Aksi</th>
+</tr>
+</thead>
+<tbody id="table-body" class="font-body-sm text-body-sm text-on-surface divide-y divide-surface-variant"><tr><td colspan="15"><div class="loading-overlay active" style="position:relative; height:200px;"><div class="spinner"></div></div></td></tr></tbody>
+</table>
+</div>
+
+<div id="pagination-container" class="p-4 border-t border-surface-variant flex justify-between items-center bg-surface-bright" style="display:none;">
+    <div class="font-body-sm text-body-sm text-on-surface-variant">
+        Menampilkan <span id="page-start" class="font-medium">0</span>-<span id="page-end" class="font-medium">0</span> dari <span id="page-total" class="font-medium">0</span> data
+        <select id="items-per-page" onchange="App.changeItemsPerPage(this.value)" class="ml-4 bg-surface border border-outline-variant rounded px-2 py-1 outline-none focus:border-primary">
+            <option value="10">10 Baris</option>
+            <option value="25">25 Baris</option>
+            <option value="50">50 Baris</option>
+            <option value="all">Semua</option>
+        </select>
+    </div>
+    <div id="pagination-buttons" class="flex items-center gap-1">
+    </div>
+</div>
+</section>
+</div>
+
+<!-- =================================================== -->
+<!-- TAB VIEW: BAHAN AJAR (KATALOG CARD GRID) -->
+<!-- =================================================== -->
+<div id="view-bahan-ajar" class="tab-view hidden flex flex-col gap-6 animate-fadeIn">
+    <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+        <div>
+            <h3 class="font-headline-md text-headline-md text-on-surface">Katalog Bahan Ajar</h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Daftar visual seluruh bahan ajar yang sedang disusun</p>
+        </div>
+        <div class="flex gap-3 w-full md:w-auto">
+            <input type="text" id="katalog-search" oninput="App.renderKatalog(true)" placeholder="Cari judul, jenis, tim..." class="w-full md:w-64 px-4 py-2 bg-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline" />
+            <select id="katalog-filter-prodi" onchange="App.renderKatalog(true)" class="py-2 pl-4 pr-10 bg-surface border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none cursor-pointer">
+                <option value="">Semua Prodi</option>
+            </select>
+        </div>
+    </div>
+    
+    <div id="katalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Dinamis diisi via JavaScript -->
+    </div>
+
+    <!-- Paginasi Katalog -->
+    <div id="katalog-pagination-container" class="p-4 border border-outline-variant bg-surface-container-lowest rounded-xl flex justify-between items-center mt-4" style="display:none;">
+        <div class="font-body-sm text-body-sm text-on-surface-variant">
+            Menampilkan <span id="katalog-page-start" class="font-medium">0</span>-<span id="katalog-page-end" class="font-medium">0</span> dari <span id="katalog-page-total" class="font-medium">0</span> data
+            <select id="katalog-items-per-page" onchange="App.changeKatalogItemsPerPage(this.value)" class="ml-4 bg-surface border border-outline-variant rounded px-2 py-1 outline-none focus:border-primary">
+                <option value="6">6 Kartu</option>
+                <option value="9" selected>9 Kartu</option>
+                <option value="12">12 Kartu</option>
+                <option value="all">Semua</option>
+            </select>
+        </div>
+        <div id="katalog-pagination-buttons" class="flex items-center gap-1">
+        </div>
+    </div>
+</div>
+
+<!-- =================================================== -->
+<!-- TAB VIEW: LAPORAN (CHARTS & REKAP PRODI) -->
+<!-- =================================================== -->
+<div id="view-laporan" class="tab-view hidden flex flex-col gap-6 animate-fadeIn">
+    <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant">
+        <h3 class="font-headline-md text-headline-md text-on-surface">Laporan & Analitik</h3>
+        <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Analisis dan rangkuman data penyusunan bahan ajar secara real-time</p>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Distribusi Jenis -->
+        <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex flex-col gap-4">
+            <h4 class="font-headline-sm text-headline-sm text-on-surface">Distribusi Jenis Bahan Ajar</h4>
+            <div id="laporan-jenis-chart" class="flex flex-col gap-4 flex-grow justify-center">
+                <!-- Dinamis -->
+            </div>
+        </div>
+        
+        <!-- Distribusi Progress -->
+        <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex flex-col gap-4">
+            <h4 class="font-headline-sm text-headline-sm text-on-surface">Distribusi Status Progress</h4>
+            <div id="laporan-progress-chart" class="flex flex-col gap-4 flex-grow justify-center">
+                <!-- Dinamis -->
+            </div>
+        </div>
+
+        <!-- Distribusi Keuangan -->
+        <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex flex-col gap-4">
+            <h4 class="font-headline-sm text-headline-sm text-on-surface">Distribusi ND Keuangan</h4>
+            <div id="laporan-nd-chart" class="flex flex-col gap-4 flex-grow justify-center">
+                <!-- Dinamis -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabel Rekap Prodi -->
+    <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant overflow-hidden flex flex-col">
+        <div class="p-4 border-b border-surface-variant bg-surface-bright flex items-center gap-2">
+            <span class="material-symbols-outlined text-on-surface-variant">analytics</span>
+            <h4 class="font-headline-sm text-headline-sm text-on-surface">Rangkuman per Program Studi</h4>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-surface-container-low font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-xs border-b border-surface-variant">
+                    <tr>
+                        <th class="px-6 py-4">Prodi</th>
+                        <th class="px-6 py-4">Total Buku</th>
+                        <th class="px-6 py-4">Selesai (100%)</th>
+                        <th class="px-6 py-4">Dalam Proses</th>
+                        <th class="px-6 py-4">Rata-rata Progress</th>
+                        <th class="px-6 py-4">Total Honor</th>
+                    </tr>
+                </thead>
+                <tbody id="laporan-prodi-table" class="font-body-sm text-body-sm text-on-surface divide-y divide-surface-variant">
+                    <!-- Dinamis -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- =================================================== -->
+<!-- TAB VIEW: TIM PENULIS (AUTHORS GRID) -->
+<!-- =================================================== -->
+<div id="view-tim-penulis" class="tab-view hidden flex flex-col gap-6 animate-fadeIn">
+    <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+        <div>
+            <h3 class="font-headline-md text-headline-md text-on-surface">Direktori Tim Penyusun</h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Informasi kontribusi penulis dan anggota tim penyusunan bahan ajar</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <input type="text" id="penulis-search" oninput="App.renderTimPenulis(true)" placeholder="Cari nama penulis..." class="w-full sm:w-64 px-4 py-2 bg-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline" />
+            <select id="penulis-sort" onchange="App.renderTimPenulis(true)" class="py-2 pl-4 pr-10 bg-surface border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none cursor-pointer">
+                <option value="karya-desc">Bahan Ajar Terbanyak</option>
+                <option value="karya-asc">Bahan Ajar Tersedikit</option>
+                <option value="prog-desc">Progress Rata-rata Tertinggi</option>
+                <option value="prog-asc">Progress Rata-rata Terendah</option>
+                <option value="name-asc">Nama (A - Z)</option>
+                <option value="name-desc">Nama (Z - A)</option>
+            </select>
+        </div>
+    </div>
+    
+    <div id="penulis-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Dinamis -->
+    </div>
+
+    <!-- Paginasi Tim Penulis -->
+    <div id="penulis-pagination-container" class="p-4 border border-outline-variant bg-surface-container-lowest rounded-xl flex justify-between items-center mt-4" style="display:none;">
+        <div class="font-body-sm text-body-sm text-on-surface-variant">
+            Menampilkan <span id="penulis-page-start" class="font-medium">0</span>-<span id="penulis-page-end" class="font-medium">0</span> dari <span id="penulis-page-total" class="font-medium">0</span> data
+            <select id="penulis-items-per-page" onchange="App.changeTimPenulisItemsPerPage(this.value)" class="ml-4 bg-surface border border-outline-variant rounded px-2 py-1 outline-none focus:border-primary">
+                <option value="4">4 Kartu</option>
+                <option value="8" selected>8 Kartu</option>
+                <option value="12">12 Kartu</option>
+                <option value="all">Semua</option>
+            </select>
+        </div>
+        <div id="penulis-pagination-buttons" class="flex items-center gap-1">
+        </div>
+    </div>
+</div>
+
+<!-- =================================================== -->
+<!-- TAB VIEW: PENGATURAN (SETTINGS & SERVER SYNC) -->
+<!-- =================================================== -->
+<div id="view-pengaturan" class="tab-view hidden flex flex-col gap-6 animate-fadeIn">
+    <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant">
+        <h3 class="font-headline-md text-headline-md text-on-surface">Pengaturan Aplikasi</h3>
+        <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Konfigurasi database, tampilan, dan sinkronisasi sistem</p>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Form Settings -->
+        <div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex flex-col gap-6">
+            <h4 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2"><span class="material-symbols-outlined">database</span> Koneksi Database Google Sheets</h4>
+            
+            <div class="flex flex-col gap-stack-sm">
+                <label class="font-label-md text-label-md text-on-surface">Google Apps Script Web App URL</label>
+                <div class="flex gap-2">
+                    <input type="text" id="settings-api-url" class="flex-grow px-4 py-2.5 bg-surface border border-outline-variant rounded-lg font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="Masukkan URL Web App..." />
+                    <button onclick="App.saveSettingsConnection()" class="px-5 py-2.5 bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container rounded-lg font-label-md text-label-md transition-all shadow-sm">Simpan</button>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">URL didapatkan dari hasil deploy Google Apps Script sebagai Web App yang terhubung dengan Google Sheets.</p>
+            </div>
+            
+            <hr class="border-surface-variant" />
+            
+            <h4 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2"><span class="material-symbols-outlined">sync</span> Interval Sinkronisasi</h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <label class="border border-outline-variant rounded-lg p-4 cursor-pointer hover:bg-surface-container-low transition-all flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-label-md text-label-md">Manual</span>
+                        <input type="radio" name="sync-interval" id="sync-manual" onclick="App.setSyncInterval(0)" class="text-primary focus:ring-primary" />
+                    </div>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Sinkronisasi manual via tombol Refresh.</p>
+                </label>
+                <label class="border border-outline-variant rounded-lg p-4 cursor-pointer hover:bg-surface-container-low transition-all flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-label-md text-label-md">5 Menit</span>
+                        <input type="radio" name="sync-interval" id="sync-5m" onclick="App.setSyncInterval(5)" class="text-primary focus:ring-primary" />
+                    </div>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Update data dari Google Sheet setiap 5 menit.</p>
+                </label>
+                <label class="border border-outline-variant rounded-lg p-4 cursor-pointer hover:bg-surface-container-low transition-all flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-label-md text-label-md">15 Menit</span>
+                        <input type="radio" name="sync-interval" id="sync-15m" onclick="App.setSyncInterval(15)" class="text-primary focus:ring-primary" />
+                    </div>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Update data dari Google Sheet setiap 15 menit.</p>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Info Sidebar -->
+        <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex flex-col gap-4">
+            <h4 class="font-headline-sm text-headline-sm text-on-surface">Informasi Sistem</h4>
+            <div class="flex flex-col gap-3 text-body-sm text-on-surface-variant">
+                <div class="flex justify-between border-b border-surface-variant pb-2">
+                    <span>Versi Aplikasi</span>
+                    <span class="font-medium text-on-surface">v2.5.0</span>
+                </div>
+                <div class="flex justify-between border-b border-surface-variant pb-2">
+                    <span>Koneksi Server</span>
+                    <span id="settings-status" class="font-medium text-emerald-600">Terhubung</span>
+                </div>
+                <div class="flex justify-between border-b border-surface-variant pb-2">
+                    <span>Cache Total Data</span>
+                    <span id="settings-cache-count" class="font-medium text-on-surface">0</span>
+                </div>
+                <div class="flex justify-between pb-2">
+                    <span>Penyimpanan Lokal</span>
+                    <span class="font-medium text-on-surface">LocalStorage OK</span>
+                </div>
+            </div>
+            
+            <button onclick="App.resetLocalCache()" class="mt-4 w-full py-2.5 border border-error text-error hover:bg-error-container hover:text-on-error-container rounded-lg font-label-md text-label-md transition-colors">
+                Bersihkan Cache Lokal
+            </button>
+        </div>
+    </div>
+</div>
+</div>
+</main>
+
+<div id="modal-backdrop" class="modal-backdrop"></div>
+<div id="toast-container" class="toast-container"></div>
+
+
+<div id="modal-edit" class="modal">
+    <div class="modal-content bg-surface-container-lowest max-w-[800px] w-full mx-auto rounded-xl shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1),0px_8px_10px_-6px_rgba(0,0,0,0.1)] flex flex-col overflow-hidden" style="max-height: 95vh;">
+        <form id="edit-form" class="h-full flex flex-col min-h-0" onsubmit="event.preventDefault();">
+            <!-- Header -->
+            <header class="flex justify-between items-center px-gutter py-4 border-b border-surface-variant bg-surface-bright shrink-0">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-on-surface-variant">edit</span>
+                    <h1 class="font-headline-sm text-headline-sm text-on-surface">Edit Bahan Ajar</h1>
+                </div>
+                <button onclick="UI.closeModal('modal-edit')" aria-label="Close" class="text-on-surface-variant hover:bg-surface-container hover:text-on-surface p-2 rounded-full transition-colors flex items-center justify-center" type="button">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
+            </header>
+            
+            <!-- Form Body -->
+            <div class="p-gutter overflow-y-auto flex-grow min-h-0 flex flex-col gap-gutter">
+                <!-- Judul Bahan Ajar (Full Width) -->
+                <div class="flex flex-col gap-stack-sm w-full">
+                    <label class="font-label-md text-label-md text-on-surface" for="edit-judul">
+                        Judul Bahan Ajar <span class="text-error">*</span>
+                    </label>
+                    <textarea class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 resize-none shadow-sm transition-all" id="edit-judul" placeholder="Masukkan judul..." rows="2"></textarea>
+                </div>
+                
+                <!-- 2-Column Grid for most fields -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-gutter gap-y-stack-lg">
+                    <!-- Similarity (Read Only) -->
+                    <div class="flex flex-col gap-stack-sm">
+                        <label class="font-label-md text-label-md text-on-surface">Similarity (Otomatis)</label>
+                        <div class="flex items-baseline gap-2 bg-surface px-4 py-3 rounded-lg border border-surface-variant">
+                            <span class="font-stat-value text-stat-value text-primary" id="edit-similarity-display">0%</span>
+                            <input type="hidden" id="edit-similarity" value="0">
+                            <span class="font-body-sm text-body-sm text-on-surface-variant">Similarity</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Jenis Bahan Ajar -->
+                    <div class="flex flex-col gap-stack-sm">
+                        <label class="font-label-md text-label-md text-on-surface" for="edit-jenis">
+                            Jenis Bahan Ajar <span class="text-error">*</span>
+                        </label>
+                        <select class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 h-[52px] shadow-sm cursor-pointer" id="edit-jenis">
+                            <option value="Buku Ajar">Buku Ajar</option>
+                            <option value="Modul Praktikum">Modul Praktikum</option>
+                            <option value="Buku Referensi">Buku Referensi</option>
+                            <option value="Modul Ajar">Modul Ajar</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Progress Penulisan -->
+                    <div class="flex flex-col gap-stack-sm">
+                        <label class="font-label-md text-label-md text-on-surface" for="edit-progress">Progress Penulisan</label>
+                        <select class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 h-[52px] shadow-sm cursor-pointer" id="edit-progress">
+                            <option value="selesai">Selesai</option>
+                            <option value="revisi">Revisi</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                    </div>
+                    
+                    <!-- ND ke KEU -->
+                    <div class="flex flex-col gap-stack-sm">
+                        <label class="font-label-md text-label-md text-on-surface" for="edit-nd">ND ke KEU</label>
+                        <select class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 h-[52px] shadow-sm cursor-pointer" id="edit-nd">
+                            <option value="Belum">BELUM</option>
+                            <option value="Kirim">Kirim</option>
+                            <option value="Tanpa Honor">Tanpa Honor</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Persentase (Read Only) -->
+                    <div class="flex flex-col gap-stack-sm">
+                        <label class="font-label-md text-label-md text-on-surface">Persentase (Otomatis)</label>
+                        <div class="flex items-baseline gap-2 bg-surface px-4 py-3 rounded-lg border border-surface-variant">
+                            <span class="font-stat-value text-stat-value text-primary" id="edit-percentage-value">0%</span>
+                            <span class="font-body-sm text-body-sm text-on-surface-variant">Progress 50% + ND 50%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Sudah Terbit -->
+                    <div class="flex flex-col gap-stack-sm">
+                        <label class="font-label-md text-label-md text-on-surface" for="edit-terbit">Sudah Terbit</label>
+                        <input class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 h-[52px] shadow-sm" id="edit-terbit" type="text" value=""/>
+                    </div>
+                    
+                    <!-- Tim Eksternal BPPK -->
+                    <div class="flex flex-col gap-stack-sm">
+                        <label class="font-label-md text-label-md text-on-surface" for="edit-tim-eksternal">Tim Eksternal BPPK</label>
+                        <input class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface placeholder:text-outline px-4 py-3 h-[52px] shadow-sm" id="edit-tim-eksternal" placeholder="Nama tim eksternal..." type="text"/>
+                    </div>
+                    
+                    <!-- Total Honor (Rp) -->
+                    <div class="flex flex-col gap-stack-sm">
+                        <label class="font-label-md text-label-md text-on-surface" for="edit-honor">Total Honor (Rp)</label>
+                        <input class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 h-[52px] shadow-sm" id="edit-honor" type="text" value="0"/>
+                    </div>
+                </div>
+                
+                <!-- Tim Penyusun (Full Width) -->
+                <div class="flex flex-col gap-stack-sm w-full mt-2">
+                    <label class="font-label-md text-label-md text-on-surface" for="edit-tim-penyusun">Tim Penyusun</label>
+                    <textarea class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface placeholder:text-outline px-4 py-3 shadow-sm" id="edit-tim-penyusun" placeholder="Satu nama per baris (tekan Enter)..." rows="3"></textarea>
+                    <p class="font-body-sm text-body-sm text-outline">Tekan Enter untuk memisahkan nama</p>
+                </div>
+                
+                <!-- Program Studi (Chips/Radio) -->
+                <div class="flex flex-col gap-stack-sm w-full mt-2">
+                    <label class="font-label-md text-label-md text-on-surface">Program Studi</label>
+                    <div class="flex flex-wrap gap-3">
+                        <label class="cursor-pointer">
+                            <input class="peer sr-only checkbox-item" name="edit-prodi" data-field="prodi" type="radio" value="asp"/>
+                            <div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+                                <div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                ASP
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input class="peer sr-only checkbox-item" name="edit-prodi" data-field="prodi" type="radio" value="map"/>
+                            <div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+                                <div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                MAP
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input class="peer sr-only checkbox-item" name="edit-prodi" data-field="prodi" type="radio" value="mkn"/>
+                            <div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+                                <div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                MKN
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input class="peer sr-only checkbox-item" name="edit-prodi" data-field="prodi" type="radio" value="akuntansi"/>
+                            <div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+                                <div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                Akuntansi
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input class="peer sr-only checkbox-item" name="edit-prodi" data-field="prodi" type="radio" value="pajak"/>
+                            <div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+                                <div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                Pajak
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input class="peer sr-only checkbox-item" name="edit-prodi" data-field="prodi" type="radio" value="bea_cukai"/>
+                            <div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+                                <div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                Bea dan Cukai
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input class="peer sr-only checkbox-item" name="edit-prodi" data-field="prodi" type="radio" value="penilai"/>
+                            <div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+                                <div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                Penilai/PBB
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input class="peer sr-only checkbox-item" name="edit-prodi" data-field="prodi" type="radio" value="manajemen_aset"/>
+                            <div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+                                <div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                Manajemen Aset
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input class="peer sr-only checkbox-item" name="edit-prodi" data-field="prodi" type="radio" value="kebendaharaan"/>
+                            <div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+                                <div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                Kebendaharaan Negara
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Daftar SK -->
+                <div class="flex flex-col gap-stack-sm w-full mt-2">
+                    <div class="flex justify-between items-center">
+                        <label class="font-label-md text-label-md text-on-surface">Daftar SK</label>
+                        <button type="button" onclick="App.addSKRow('edit-sk-container')" class="text-primary hover:underline text-xs flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">add</span> Tambah SK
+                        </button>
+                    </div>
+                    <div id="edit-sk-container" class="space-y-2 mt-1">
+                        <!-- Dynamic rows added by JS -->
+                    </div>
+                </div>
+
+                <!-- Catatan -->
+                <div class="flex flex-col gap-stack-sm w-full mt-2">
+                    <label class="font-label-md text-label-md text-on-surface" for="edit-catatan">Catatan</label>
+                    <textarea class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface placeholder:text-outline px-4 py-3 shadow-sm" id="edit-catatan" placeholder="Masukkan catatan..." rows="2"></textarea>
+                </div>
+            </div>
+            
+            <!-- Footer Actions -->
+            <footer class="px-gutter py-4 border-t border-surface-variant bg-surface-bright flex justify-end items-center gap-3 mt-auto shrink-0">
+                <button onclick="UI.closeModal('modal-edit')" class="px-6 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-primary font-label-md text-label-md hover:bg-surface transition-colors shadow-sm" type="button">
+                    Batal
+                </button>
+                <button id="edit-submit-btn" onclick="App.handleEdit()" class="px-6 py-2.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm flex items-center gap-2" type="button">
+                    <span class="material-symbols-outlined text-[18px]">save</span>
+                    Simpan Perubahan
+                </button>
+            </footer>
+        </form>
+    </div>
+</div>
+
+<div id="modal-add" class="modal">
+    <div class="modal-content bg-surface-container-lowest max-w-[1200px] w-full mx-auto rounded-xl shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col" style="max-height: 95vh;">
+        <header class="flex justify-between items-center px-6 py-4 border-b border-surface-variant bg-surface-bright shrink-0">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">add_circle</span>
+                <h2 class="font-headline-sm text-headline-sm text-on-surface">Tambah Bahan Ajar</h2>
+            </div>
+            <button onclick="UI.closeModal('modal-add')" class="text-on-surface-variant hover:bg-surface-container p-2 rounded-full transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
+        </header>
+        
+        <div class="flex flex-col p-6 overflow-hidden flex-grow">
+            <!-- Tabs -->
+            <div id="add-tab-toggle" class="bg-surface-container p-1 rounded-lg flex space-x-1 mb-4 w-fit">
+                <button data-tab="single" onclick="App.switchAddMode('single')" class="tab-toggle-btn active px-4 py-2 rounded-md font-label-md text-label-md text-on-surface-variant hover:bg-surface-variant transition-colors flex items-center gap-2 [&.active]:bg-surface-container-lowest [&.active]:text-primary [&.active]:shadow-sm">
+                    <span class="material-symbols-outlined text-[18px]">edit</span> Satuan
+                </button>
+                <button data-tab="bulk" onclick="App.switchAddMode('bulk')" class="tab-toggle-btn px-4 py-2 rounded-md font-label-md text-label-md text-on-surface-variant hover:bg-surface-variant transition-colors flex items-center gap-2 [&.active]:bg-surface-container-lowest [&.active]:text-primary [&.active]:shadow-sm">
+                    <span class="material-symbols-outlined text-[18px]">table_view</span> Bulk Input
+                </button>
+            </div>
+            
+            <!-- Single Add Form (Reusing Edit form structure but with Add IDs) -->
+            <div id="tab-single" class="tab-content active overflow-y-auto flex-grow" style="display:block;">
+                <form id="add-form" class="flex flex-col gap-gutter pb-4">
+                    <div class="flex flex-col gap-stack-sm w-full">
+<label class="font-label-md text-label-md text-on-surface" for="judul">
+                        Judul Bahan Ajar <span class="text-error">*</span>
+</label>
+<textarea class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 resize-none shadow-sm transition-all" id="judul" placeholder="Masukkan judul..." rows="2">STUDI KASUS PBB/Studi Kasus Putusan Pengadilan Pajak Terkait Penilaian Pajak</textarea>
+</div>
+<!-- 2-Column Grid for most fields -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-gutter gap-y-stack-lg">
+<!-- Similarity (Read Only) -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface">Similarity (Otomatis)</label>
+<div class="flex items-baseline gap-2 bg-surface px-4 py-3 rounded-lg border border-surface-variant">
+<span class="font-stat-value text-stat-value text-primary">26%</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Similarity</span>
+</div>
+</div>
+<!-- Jenis Bahan Ajar -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface" for="jenis">
+                            Jenis Bahan Ajar <span class="text-error">*</span>
+</label>
+<select class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 h-[52px] shadow-sm cursor-pointer" id="jenis">
+<option value="Buku Ajar">Buku Ajar</option>
+<option value="Modul Praktikum">Modul Praktikum</option>
+<option value="Buku Referensi">Buku Referensi</option>
+<option value="Modul Ajar">Modul Ajar</option>
+</select>
+</div>
+<!-- Progress Penulisan -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface" for="progress">Progress Penulisan</label>
+<select class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 h-[52px] shadow-sm cursor-pointer" id="progress">
+<option selected="" value="selesai">Selesai</option>
+<option value="revisi">Revisi</option>
+<option value="draft">Draft</option>
+</select>
+</div>
+<!-- ND ke KEU -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface" for="nd_keu">ND ke KEU</label>
+<select class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 h-[52px] shadow-sm cursor-pointer" id="nd_keu">
+<option selected="" value="Belum">BELUM</option>
+<option value="Kirim">Kirim</option>
+<option value="Tanpa Honor">Tanpa Honor</option>
+</select>
+</div>
+<!-- Persentase (Read Only) -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface">Persentase (Otomatis)</label>
+<div class="flex items-baseline gap-2 bg-surface px-4 py-3 rounded-lg border border-surface-variant">
+<span class="font-stat-value text-stat-value text-primary">100%</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Progress 50% + ND 50%</span>
+</div>
+</div>
+<!-- Sudah Terbit -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface" for="terbit">Sudah Terbit</label>
+<input class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 h-[52px] shadow-sm" id="terbit" type="text" value="BELUM ND-43/PKN.16/2025"/>
+</div>
+<!-- Tim Eksternal BPPK -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface" for="tim_eksternal">Tim Eksternal BPPK</label>
+<input class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface placeholder:text-outline px-4 py-3 h-[52px] shadow-sm" id="tim_eksternal" placeholder="Nama tim eksternal..." type="text"/>
+</div>
+<!-- Total Honor (Rp) -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface" for="honor">Total Honor (Rp)</label>
+<input class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 h-[52px] shadow-sm" id="honor" type="text" value="0"/>
+</div>
+</div>
+<!-- Tim Penyusun (Full Width) -->
+<div class="flex flex-col gap-stack-sm w-full mt-2">
+<label class="font-label-md text-label-md text-on-surface" for="penyusun">Tim Penyusun</label>
+<textarea class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface placeholder:text-outline px-4 py-3 shadow-sm" id="penyusun" placeholder="Satu nama per baris (tekan Enter)..." rows="3"></textarea>
+<p class="font-body-sm text-body-sm text-outline">Tekan Enter untuk memisahkan nama</p>
+</div>
+<!-- Program Studi (Chips/Radio) -->
+<div class="flex flex-col gap-stack-sm w-full mt-2">
+<label class="font-label-md text-label-md text-on-surface">Program Studi</label>
+<div class="flex flex-wrap gap-3">
+<!-- Chip Item -->
+<label class="cursor-pointer">
+<input class="peer sr-only" name="prodi" type="radio" value="asp"/>
+<div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+<div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                ASP
+                            </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="prodi" type="radio" value="map"/>
+<div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+<div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                MAP
+                            </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="prodi" type="radio" value="mkn"/>
+<div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+<div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                MKN
+                            </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="prodi" type="radio" value="akuntansi"/>
+<div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+<div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                Akuntansi
+                            </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="prodi" type="radio" value="pajak"/>
+<div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+<div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                Pajak
+                            </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="prodi" type="radio" value="bea_cukai"/>
+<div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+<div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                Bea dan Cukai
+                            </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="prodi" type="radio" value="penilai"/>
+<div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+<div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                Penilai/PBB
+                            </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="prodi" type="radio" value="manajemen_aset"/>
+<div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+<div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                Manajemen Aset
+                            </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="prodi" type="radio" value="kebendaharaan"/>
+<div class="px-4 py-2 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-body-md text-body-md peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-primary transition-all hover:bg-surface flex items-center gap-2">
+<div class="w-4 h-4 rounded-full border border-outline peer-checked:border-primary peer-checked:border-4 transition-all"></div>
+                                Kebendaharaan Negara
+                            </div>
+</label>
+</div>
+</div>
+
+                <!-- Daftar SK -->
+                <div class="flex flex-col gap-stack-sm w-full mt-2">
+                    <div class="flex justify-between items-center">
+                        <label class="font-label-md text-label-md text-on-surface">Daftar SK</label>
+                        <button type="button" onclick="App.addSKRow('add-sk-container')" class="text-primary hover:underline text-xs flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">add</span> Tambah SK
+                        </button>
+                    </div>
+                    <div id="add-sk-container" class="space-y-2 mt-1">
+                        <!-- Dynamic rows added by JS -->
+                    </div>
+                </div>
+
+                <!-- Catatan -->
+                <div class="flex flex-col gap-stack-sm w-full mt-2">
+                    <label class="font-label-md text-label-md text-on-surface" for="add-catatan">Catatan</label>
+                    <textarea class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface placeholder:text-outline px-4 py-3 shadow-sm" id="add-catatan" placeholder="Masukkan catatan..." rows="2"></textarea>
+                </div>
+
+                </form>
+            </div>
+            
+            <!-- Bulk Add Form -->
+            <div id="tab-bulk" class="tab-content flex-grow flex flex-col" style="display:none; min-height:0;">
+                <!-- Action Buttons & Status -->
+<div class="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+<div class="flex gap-2">
+<button onclick="App.addBulkRows(1)" class="px-3 py-1.5 rounded-md border border-outline-variant bg-surface-container-lowest font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors shadow-sm">
+                            + 1 Baris
+                        </button>
+<button onclick="App.addBulkRows(5)" class="px-3 py-1.5 rounded-md border border-outline-variant bg-surface-container-lowest font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors shadow-sm">
+                            + 5 Baris
+                        </button>
+<button onclick="App.addBulkRows(10)" class="px-3 py-1.5 rounded-md border border-outline-variant bg-surface-container-lowest font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors shadow-sm">
+                            + 10 Baris
+                        </button>
+</div>
+<div class="h-6 w-[1px] bg-outline-variant hidden md:block"></div>
+<button onclick="App.clearEmptyBulkRows()" class="px-3 py-1.5 rounded-md font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete_sweep">delete_sweep</span>
+                        Hapus Kosong
+                    </button>
+<div class="h-6 w-[1px] bg-outline-variant hidden md:block"></div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">
+<span id="bulk-counter" class="font-semibold text-on-surface">0 baris terisi</span>
+                    </div>
+</div>
+<div id="bulk-progress" class="mt-4" style="display:none;">
+    <div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
+        <div id="bulk-progress-fill" class="h-full bg-primary transition-all duration-300" style="width:0%"></div>
+    </div>
+    <div id="bulk-progress-text" class="text-xs text-on-surface-variant mt-1 text-center">Menyimpan...</div>
+</div>
+
+<!-- Spreadsheet Grid Container -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),_0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant overflow-hidden flex-grow flex flex-col">
+<div class="overflow-x-auto overflow-y-auto flex-grow relative">
+<table class="w-full text-left border-collapse whitespace-nowrap min-w-[1200px]">
+<thead class="bg-primary text-on-primary font-label-md text-label-md sticky top-0 z-10 shadow-sm">
+<tr>
+<th class="w-12 py-3 px-4 text-center border-r border-primary-container">#</th>
+<th class="min-w-[200px] py-3 px-4 border-r border-primary-container">JUDUL *</th>
+<th class="w-24 py-3 px-4 border-r border-primary-container">SIM.</th>
+<th class="w-32 py-3 px-4 border-r border-primary-container">JENIS *</th>
+<th class="w-32 py-3 px-4 border-r border-primary-container">PROGRESS</th>
+<th class="w-32 py-3 px-4 border-r border-primary-container">ND KEU</th>
+<th class="w-32 py-3 px-4 border-r border-primary-container">TERBIT</th>
+<th class="min-w-[200px] py-3 px-4 border-r border-primary-container">TIM PENYUSUN</th>
+<th class="w-32 py-3 px-4 border-r border-primary-container">PRODI</th>
+<th class="w-24 py-3 px-4 border-r border-primary-container">HONOR</th>
+<th class="w-32 py-3 px-4 border-r border-primary-container">TIM EKSTERNAL</th>
+<th class="w-32 py-3 px-4 border-r border-primary-container">SK TAHUN</th>
+<th class="w-48 py-3 px-4 border-r border-primary-container">SK URL</th>
+<th class="min-w-[150px] py-3 px-4 border-r border-primary-container">CATATAN</th>
+<th class="w-12 py-3 px-4 text-center bg-primary-container text-on-primary-container">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</th>
+</tr>
+</thead>
+<tbody id="bulk-table-body" class="font-body-sm text-body-sm text-on-surface"></tbody>
+</table>
+</div>
+</div>
+
+            </div>
+        </div>
+        
+        <footer class="px-6 py-4 border-t border-surface-variant bg-surface-bright flex justify-end gap-3 shrink-0">
+            <button onclick="UI.closeModal('modal-add')" class="px-6 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-primary font-label-md hover:bg-surface transition-colors shadow-sm">Batal</button>
+            <button id="add-submit-btn" onclick="App.handleAdd()" class="px-6 py-2.5 rounded-lg bg-primary text-on-primary font-label-md hover:bg-primary-container transition-colors shadow-sm flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">save</span> Simpan Data</button>
+            <button id="bulk-submit-btn" onclick="App.handleBulkAdd()" style="display:none;" class="px-6 py-2.5 rounded-lg bg-primary text-on-primary font-label-md hover:bg-primary-container transition-colors shadow-sm flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">save</span> Simpan Semua (<span id="bulk-save-count">0</span> data)</button>
+        </footer>
+    </div>
+</div>
+
+<!-- MODAL SETUP -->
+<div id="modal-setup" class="modal">
+    <div class="modal-content bg-surface-container-lowest max-w-[560px] rounded-xl shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1),0px_8px_10px_-6px_rgba(0,0,0,0.1)] overflow-hidden">
+        <header class="flex justify-between items-center px-6 py-4 border-b border-surface-variant bg-surface-bright">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-on-surface-variant">settings</span>
+                <h2 class="font-headline-sm text-headline-sm text-on-surface">Konfigurasi API</h2>
+            </div>
+            <button onclick="UI.closeModal('modal-setup')" class="text-on-surface-variant hover:bg-surface-container p-2 rounded-full transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
+        </header>
+        <div class="p-6">
+            <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Hubungkan aplikasi ini dengan Google Sheets melalui Google Apps Script.</p>
+            <div class="flex flex-col gap-2 mb-4">
+                <label class="font-label-md text-label-md text-on-surface">URL Google Apps Script Web App</label>
+                <input type="url" id="setup-url-input" class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 shadow-sm" placeholder="https://script.google.com/macros/s/.../exec">
+            </div>
+        </div>
+        <footer class="px-6 py-4 border-t border-surface-variant bg-surface-bright flex justify-end gap-3">
+            <button onclick="UI.closeModal('modal-setup')" class="px-6 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-primary font-label-md hover:bg-surface transition-colors shadow-sm">Batal</button>
+            <button onclick="App.saveSetup()" class="px-6 py-2.5 rounded-lg bg-primary text-on-primary font-label-md hover:bg-primary-container transition-colors shadow-sm">Simpan</button>
+        </footer>
+    </div>
+</div>
+
+<!-- MODAL DELETE -->
+<div id="modal-delete" class="modal">
+    <div class="modal-content bg-surface-container-lowest max-w-[440px] rounded-xl shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1)] overflow-hidden">
+        <header class="flex justify-between items-center px-6 py-4 border-b border-surface-variant bg-surface-bright">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-error">error</span>
+                <h2 class="font-headline-sm text-headline-sm text-on-surface">Konfirmasi Hapus</h2>
+            </div>
+            <button onclick="UI.closeModal('modal-delete')" class="text-on-surface-variant hover:bg-surface-container p-2 rounded-full transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
+        </header>
+        <div class="p-6 text-center">
+            <div class="w-16 h-16 bg-error-container text-error rounded-full flex items-center justify-center mx-auto mb-4"><span class="material-symbols-outlined text-[32px]">delete</span></div>
+            <h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Hapus Bahan Ajar?</h3>
+            <p class="font-body-md text-body-md text-on-surface-variant">Anda yakin ingin menghapus <span id="delete-title" class="font-bold text-on-surface"></span>? Tindakan ini tidak dapat dibatalkan.</p>
+        </div>
+        <footer class="px-6 py-4 border-t border-surface-variant bg-surface-bright flex justify-end gap-3">
+            <button onclick="UI.closeModal('modal-delete')" class="px-6 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-primary font-label-md hover:bg-surface transition-colors shadow-sm">Batal</button>
+            <button onclick="App.handleDelete()" id="delete-submit-btn" class="px-6 py-2.5 rounded-lg bg-error text-on-error font-label-md hover:bg-[#93000a] transition-colors shadow-sm flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">delete</span> Hapus</button>
+        </footer>
+    </div>
+</div>
+
+<!-- MODAL DETAIL -->
+<div id="modal-detail" class="modal">
+    <div class="modal-content bg-surface-container-lowest max-w-[700px] rounded-xl shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1)] overflow-hidden">
+        <header class="flex justify-between items-center px-6 py-4 border-b border-surface-variant bg-surface-bright">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-on-surface-variant">description</span>
+                <h2 class="font-headline-sm text-headline-sm text-on-surface">Detail Bahan Ajar</h2>
+            </div>
+            <button onclick="UI.closeModal('modal-detail')" class="text-on-surface-variant hover:bg-surface-container p-2 rounded-full transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
+        </header>
+        <div id="detail-body" class="p-6 overflow-y-auto max-h-[70vh] font-body-md text-body-md text-on-surface">
+            <!-- Populated via JS -->
+        </div>
+        <footer class="px-6 py-4 border-t border-surface-variant bg-surface-bright flex justify-end gap-3">
+            <button onclick="UI.closeModal('modal-detail')" class="px-6 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-primary font-label-md hover:bg-surface transition-colors shadow-sm">Tutup</button>
+            <button id="detail-edit-btn" class="px-6 py-2.5 rounded-lg bg-primary text-on-primary font-label-md hover:bg-primary-container transition-colors shadow-sm flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">edit</span> Edit</button>
+        </footer>
+    </div>
+</div>
+</div> <!-- Close app-container -->
+
+<!-- LOGIN OVERLAY -->
+<div id="login-overlay" class="fixed inset-0 z-[9999] bg-gradient-to-tr from-primary to-secondary flex items-center justify-center p-4" style="display:none;">
+    <div class="bg-surface-container-lowest/90 backdrop-blur-md rounded-2xl p-8 max-w-md w-full border border-outline-variant shadow-2xl flex flex-col gap-6 animate-fadeIn">
+        <div class="text-center">
+            <div class="w-16 h-16 bg-primary text-on-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md">
+                <span class="material-symbols-outlined text-[36px] icon-fill">lock</span>
+            </div>
+            <h2 class="font-headline-md text-headline-md text-on-surface font-black" id="login-title">Akses Terkunci</h2>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-2" id="login-subtitle">Masukkan password Anda untuk memuat data dan mengaktifkan aplikasi.</p>
+        </div>
+        
+        <!-- Form Setup (displayed only if first run) -->
+        <div id="login-fields-container" class="flex flex-col gap-4">
+            <div id="login-setup-fields" class="hidden flex flex-col gap-4 text-left">
+                <div class="flex flex-col gap-1.5">
+                    <label class="font-label-md text-label-md text-on-surface">Google Apps Script Web App URL</label>
+                    <input type="text" id="login-setup-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full rounded-lg border-outline focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface px-4 py-2.5 text-body-md shadow-sm transition-all" />
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-4 text-left">
+                <div class="flex flex-col gap-1.5">
+                    <label class="font-label-md text-label-md text-on-surface">Password</label>
+                    <div class="relative">
+                        <input type="password" id="login-password" placeholder="Masukkan password..." class="w-full rounded-lg border-outline focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface pl-4 pr-12 py-3 text-body-md shadow-sm transition-all" onkeydown="if(event.key === 'Enter') Auth.submit()" />
+                        <button onclick="Auth.togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[20px]" id="password-toggle-icon">visibility</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <button onclick="Auth.submit()" id="login-submit-btn" class="w-full bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-all py-3 rounded-lg font-semibold shadow-md flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">login</span> Masuk Ke Sistem
+                </button>
+            </div>
+        </div>
+
+        <!-- Setup Success Container -->
+        <div id="login-setup-success" class="hidden flex flex-col gap-4 text-left">
+            <div class="bg-primary/5 border border-primary/20 p-4 rounded-xl flex gap-3 items-start">
+                <span class="material-symbols-outlined text-primary">key</span>
+                <div>
+                    <h3 class="font-semibold text-sm text-primary">Koneksi Aman Terbentuk!</h3>
+                    <p class="text-xs text-on-surface-variant mt-1">Gunakan kunci tanda tangan digital (SIGNATURE_KEY) di bawah ini untuk backend Google Apps Script Anda.</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col gap-1.5">
+                <label class="font-label-md text-label-md text-on-surface">Signature Key (SIGNATURE_KEY)</label>
+                <div class="relative">
+                    <textarea id="login-setup-key" readonly rows="2" class="w-full rounded-lg border-outline bg-surface-container-low px-4 py-2.5 text-xs font-mono shadow-sm resize-none"></textarea>
+                    <button onclick="Auth.copyKey()" class="absolute right-2 bottom-2 bg-primary text-on-primary px-3 py-1 rounded text-[11px] font-semibold hover:bg-primary-container hover:text-on-primary-container transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">content_copy</span> Copy</button>
+                </div>
+            </div>
+
+            <div class="bg-surface-container border border-outline-variant p-3.5 rounded-lg text-xs text-on-surface-variant flex flex-col gap-1.5 leading-relaxed">
+                <span class="font-semibold text-on-surface">Instruksi Apps Script:</span>
+                <span>1. Buka Google Sheet &gt; Extensions &gt; Apps Script.</span>
+                <span>2. Buka **Project Settings** (ikon roda gigi di kiri).</span>
+                <span>3. Klik **Add Script Property** di bawah halaman.</span>
+                <span>4. Set nama property: <code class="bg-surface px-1 py-0.5 rounded font-mono text-[11px]">SIGNATURE_KEY</code></span>
+                <span>5. Paste kunci di atas sebagai value, klik **Save**.</span>
+            </div>
+
+            <button onclick="Auth.completeSetup()" class="w-full bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-all py-3 rounded-lg font-semibold shadow-md flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-[20px]">check_circle</span> Saya Sudah Memasangnya
+            </button>
+        </div>
+        
+        <div id="login-error-msg" class="text-error font-medium text-xs text-center hidden min-h-[16px]">
+            Password salah, silakan coba lagi.
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+<script src="js/auth.js"></script>
+
+<script>
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        App.init();
+        Auth.init();
+    });
+</script>
+</body>
+</html>

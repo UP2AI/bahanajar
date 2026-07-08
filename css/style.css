@@ -1,0 +1,88 @@
+/* Custom styles for Monitoring Bahan Ajar (Tailwind based) */
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.icon-fill { font-variation-settings: 'FILL' 1; }
+
+/* Scrollbar */
+textarea::-webkit-scrollbar, .overflow-x-auto::-webkit-scrollbar { width: 8px; height: 8px; }
+textarea::-webkit-scrollbar-track, .overflow-x-auto::-webkit-scrollbar-track { background: #f2f4f6; border-radius: 4px; }
+textarea::-webkit-scrollbar-thumb, .overflow-x-auto::-webkit-scrollbar-thumb { background: #c0c8cb; border-radius: 4px; }
+textarea::-webkit-scrollbar-thumb:hover, .overflow-x-auto::-webkit-scrollbar-thumb:hover { background: #70787c; }
+
+/* Modals */
+.modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); z-index: 40; }
+.modal-backdrop.active { display: block; }
+.modal { display: none; position: fixed; inset: 0; z-index: 50; padding: 1rem; }
+.modal.active { display: flex; justify-content: center; align-items: center; }
+.modal-content { max-height: 90vh; display: flex; flex-direction: column; width: 100%; }
+
+/* Table Inputs */
+.table-input { border: none; background: transparent; width: 100%; height: 100%; padding: 8px; font-family: 'Inter', sans-serif; font-size: 14px; color: #191c1e; }
+.table-input:focus { outline: none; background-color: #f7f9fb; }
+.table-cell-border { border-right: 1px solid #e0e3e5; border-bottom: 1px solid #e0e3e5; }
+
+/* Toasts */
+.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+.toast { padding: 12px 16px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 8px; color: #fff; font-size: 14px; animation: slideIn 0.3s ease-out; }
+.toast.removing { animation: fadeOut 0.3s ease-out; }
+.toast--success { background-color: #0f4c5c; }
+.toast--error { background-color: #ba1a1a; }
+.toast--warning { background-color: #b36b00; }
+.toast--info { background-color: #505f76; }
+
+/* Loading State */
+.loading-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.7); z-index: 20; display: none; align-items: center; justify-content: center; }
+.loading-overlay.active { display: flex; }
+.spinner { width: 32px; height: 32px; border: 3px solid #e0e3e5; border-top-color: #0f4c5c; border-radius: 50%; animation: spin 1s linear infinite; }
+
+/* Empty State */
+.empty-state { text-align: center; padding: 48px; color: #70787c; }
+.empty-state .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+
+/* Custom Checkbox / Dropdown for Bulk Prodi */
+.checkbox-item.checked .prodi-check { display: inline; }
+.checkbox-item .prodi-check { display: none; }
+
+select {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23505f76' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E") !important;
+  background-position: right 0.75rem center !important;
+  background-repeat: no-repeat !important;
+  background-size: 1rem 1rem !important;
+  padding-right: 2.25rem !important;
+}
+
+.prodi-chip {
+  display: inline-block;
+  background-color: #d3e4fe;
+  color: #0b1c30;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 2px;
+  margin-bottom: 2px;
+  border: 1px solid #b7c8e1;
+}
+
+.bulk-prodi-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #e0e3e5;
+  z-index: 100;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-height: 240px;
+  overflow-y: auto;
+  min-width: 12rem;
+}
+.bulk-prodi-dropdown.active { display: block; }
+.bulk-row-error { background-color: #ffdad6 !important; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes fadeOut { to { opacity: 0; } }
