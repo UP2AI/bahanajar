@@ -123,8 +123,9 @@ const App = {
       if (Array.isArray(this.data) && typeof Utils !== 'undefined' && typeof Utils.findMaxSimilarity === 'function') {
         const titles = this.data.map(item => ({ ID: item.ID, JUDUL: item.JUDUL }));
         this.data.forEach(item => {
-          const { maxSimilarity } = Utils.findMaxSimilarity(item.JUDUL, titles, item.ID);
+          const { maxSimilarity, mostSimilarTitle } = Utils.findMaxSimilarity(item.JUDUL, titles, item.ID);
           item.SIMILARITY = maxSimilarity;
+          item.MOST_SIMILAR_TITLE = mostSimilarTitle;
         });
       }
 
@@ -342,7 +343,7 @@ const App = {
             </div>
           </td>
           
-          <td class="px-6 py-4 text-center w-24">${UI.renderSimilarity(item.SIMILARITY)}</td>
+          <td class="px-6 py-4 text-center w-24">${UI.renderSimilarity(item.SIMILARITY, item.MOST_SIMILAR_TITLE)}</td>
           
           <td class="px-6 py-4 min-w-[180px]">
             <div class="flex flex-col gap-1.5">
@@ -610,7 +611,7 @@ const App = {
     const text = inputEl.value.trim();
     if (text.length >= 3) {
       const r = Utils.findMaxSimilarity(text, App.data);
-      simCell.innerHTML = UI.renderSimilarity(r.maxSimilarity);
+      simCell.innerHTML = UI.renderSimilarity(r.maxSimilarity, r.mostSimilarTitle);
     } else {
       simCell.innerHTML = '<span style="color:var(--text-tertiary);">-</span>';
     }
@@ -813,7 +814,10 @@ const App = {
         </div>
         <div class="flex flex-col gap-1">
           <div class="font-label-md text-label-md text-on-surface-variant">Similarity</div>
-          <div class="font-body-md text-body-md">${UI.renderSimilarity(record.SIMILARITY)}</div>
+          <div class="font-body-md text-body-md">
+            ${UI.renderSimilarity(record.SIMILARITY, record.MOST_SIMILAR_TITLE)}
+            ${record.MOST_SIMILAR_TITLE ? `<span class="text-xs text-on-surface-variant block mt-1">Mirip dengan: <span class="font-medium text-on-surface">${Utils.escapeHtml(record.MOST_SIMILAR_TITLE)}</span></span>` : ''}
+          </div>
         </div>
         <div class="flex flex-col gap-1">
           <div class="font-label-md text-label-md text-on-surface-variant">Progress</div>
@@ -1694,5 +1698,3 @@ const App = {
     }
   },
 };
-
-document.addEventListener('DOMContentLoaded', () => App.init());

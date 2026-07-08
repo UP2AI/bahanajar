@@ -346,7 +346,7 @@
 <div class="flex flex-1 flex-wrap gap-4 items-center">
 <div class="relative min-w-[280px] flex-1 max-w-md">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input class="w-full pl-10 pr-4 py-2 bg-surface border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline" id="search-input" placeholder="Cari judul, tim penyusun, catatan..." type="text"/>
+<input class="w-full pl-10 pr-4 py-2 bg-surface border border-outline-variant rounded-lg font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline" id="search-input" placeholder="Cari judul, tim penyusun, catatan..." type="text" autocomplete="off" spellcheck="false"/>
 </div>
 <select id="filter-jenis" class="py-2 pl-4 pr-10 bg-surface border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none cursor-pointer">
     <option value="">Semua Jenis</option>
@@ -1200,7 +1200,10 @@
         </div>
         
         <!-- Form Setup (displayed only if first run) -->
-        <div id="login-fields-container" class="flex flex-col gap-4">
+        <form id="login-form" onsubmit="event.preventDefault(); Auth.submit();" class="flex flex-col gap-4">
+            <!-- Hidden username field to isolate browser autofill -->
+            <input type="text" name="username" style="display:none;" value="app_user" autocomplete="username" />
+            
             <div id="login-setup-fields" class="hidden flex flex-col gap-4 text-left">
                 <div class="flex flex-col gap-1.5">
                     <label class="font-label-md text-label-md text-on-surface">Google Apps Script Web App URL</label>
@@ -1212,21 +1215,21 @@
                 <div class="flex flex-col gap-1.5">
                     <label class="font-label-md text-label-md text-on-surface">Password Keamanan</label>
                     <div class="relative">
-                        <input type="password" id="login-password" placeholder="Buat password keamanan baru..." class="w-full rounded-lg border-outline focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface pl-4 pr-12 py-3 text-body-md shadow-sm transition-all" onkeydown="if(event.key === 'Enter') Auth.submit()" />
-                        <button onclick="Auth.togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center">
+                        <input type="password" id="login-password" autocomplete="current-password" placeholder="Masukkan password..." class="w-full rounded-lg border-outline focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface pl-4 pr-12 py-3 text-body-md shadow-sm transition-all" />
+                        <button type="button" onclick="Auth.togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center">
                             <span class="material-symbols-outlined text-[20px]" id="password-toggle-icon">visibility</span>
                         </button>
                     </div>
                 </div>
                 
-                <button onclick="Auth.submit()" id="login-submit-btn" class="w-full bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-all py-3 rounded-lg font-semibold shadow-md flex items-center justify-center gap-2">
+                <button type="submit" id="login-submit-btn" class="w-full bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-all py-3 rounded-lg font-semibold shadow-md flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-[20px]">login</span> Masuk Ke Sistem
                 </button>
                 <div class="text-center mt-2">
-                    <button onclick="Auth.resetSecuritySettings()" class="text-xs text-on-surface-variant hover:text-error transition-colors font-medium cursor-pointer">Reset Konfigurasi Aplikasi</button>
+                    <button type="button" onclick="Auth.resetSecuritySettings()" class="text-xs text-on-surface-variant hover:text-error transition-colors font-medium cursor-pointer">Reset Konfigurasi Aplikasi</button>
                 </div>
             </div>
-        </div>
+        </form>
 
         <!-- Setup Success Container -->
         <div id="login-setup-success" class="hidden flex flex-col gap-4 text-left">

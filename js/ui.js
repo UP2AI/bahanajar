@@ -184,12 +184,14 @@ const UI = {
   },
 
   /**
-   * Render similarity display
+   * Render similarity display with hover info
    */
-  renderSimilarity(similarity) {
+  renderSimilarity(similarity, mostSimilarTitle = '') {
     const sim = parseInt(similarity) || 0;
     const cls = Utils.getSimilarityClass(sim);
-    return `<span class="font-medium ${cls}">${sim}%</span>`;
+    const tooltip = mostSimilarTitle ? `title="Mirip dengan: ${Utils.escapeHtml(mostSimilarTitle)}"` : '';
+    const cursorClass = mostSimilarTitle ? 'cursor-help hover:underline decoration-dotted' : '';
+    return `<span class="font-medium ${cls} ${cursorClass}" ${tooltip}>${sim}%</span>`;
   },
 
   /**
