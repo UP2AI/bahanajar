@@ -1206,6 +1206,13 @@
                     <label class="font-label-md text-label-md text-on-surface">Google Apps Script Web App URL</label>
                     <input type="text" id="login-setup-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full rounded-lg border-outline focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface px-4 py-2.5 text-body-md shadow-sm transition-all" />
                 </div>
+                <div class="flex flex-col gap-1.5">
+                    <div class="flex justify-between items-center">
+                        <label class="font-label-md text-label-md text-on-surface">Signature Key (SIGNATURE_KEY)</label>
+                        <button onclick="document.getElementById('login-setup-key-input').value = Auth.generateRandomKey()" class="text-xs text-primary hover:text-primary-container transition-colors font-semibold flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px] align-middle">autorenew</span> Generate</button>
+                    </div>
+                    <input type="text" id="login-setup-key-input" placeholder="Masukkan atau generate signature key..." class="w-full rounded-lg border-outline focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface px-4 py-2.5 text-body-md shadow-sm transition-all font-mono text-xs" />
+                </div>
             </div>
 
             <div class="flex flex-col gap-4 text-left">

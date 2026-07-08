@@ -29,7 +29,7 @@ const API = {
    * Check if API URL is configured
    */
   isConfigured() {
-    return !!this.getUrl() || !!localStorage.getItem('monitoring_api_url_encrypted');
+    return !!this.getUrl() || !!localStorage.getItem('monitoring_api_config_encrypted');
   },
 
   /**
