@@ -125,8 +125,8 @@ const Auth = {
         return;
       }
 
-      // Generate a random salt for this installation
-      const salt = CryptoJS.lib.WordArray.random(16);
+      // Derive a deterministic salt from the unique Apps Script URL (unique per deployment, not hardcoded)
+      const salt = CryptoJS.SHA256(url);
       const saltHex = salt.toString(CryptoJS.enc.Hex);
       localStorage.setItem('monitoring_api_salt', saltHex);
 
