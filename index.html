@@ -631,8 +631,11 @@
                 </div>
             </div>
             
-            <button onclick="App.resetLocalCache()" class="mt-4 w-full py-2.5 border border-error text-error hover:bg-error-container hover:text-on-error-container rounded-lg font-label-md text-label-md transition-colors">
+            <button onclick="App.resetLocalCache()" class="mt-4 w-full py-2.5 border border-error text-error hover:bg-error/5 rounded-lg font-label-md text-label-md transition-colors">
                 Bersihkan Cache Lokal
+            </button>
+            <button onclick="Auth.resetSecuritySettings()" class="w-full py-2.5 bg-error text-on-error hover:bg-primary-container hover:text-on-primary-container rounded-lg font-label-md text-label-md transition-colors flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
+                <span class="material-symbols-outlined text-[18px]">lock_reset</span> Reset Setelan Keamanan
             </button>
         </div>
     </div>

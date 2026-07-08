@@ -203,5 +203,14 @@ const Auth = {
     sessionStorage.clear();
     UI.showToast('Anda telah keluar dari sistem', 'info');
     window.location.reload();
+  },
+
+  resetSecuritySettings() {
+    if (confirm('Apakah Anda yakin ingin mereset seluruh setelan keamanan? Tindakan ini akan menghapus database terenkripsi dan mengharuskan Anda melakukan setup ulang.')) {
+      localStorage.removeItem('monitoring_api_url_encrypted');
+      localStorage.removeItem('monitoring_api_salt');
+      sessionStorage.clear();
+      window.location.reload();
+    }
   }
 };
