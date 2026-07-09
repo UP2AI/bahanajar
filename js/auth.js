@@ -5,28 +5,52 @@
  */
 
 const Auth = {
-  // Session validation (TEMPORARILY BYPASSED FOR LOCALHOST TESTING)
+  // Session validation
   init() {
-    console.log("Login di-nonaktifkan untuk pengujian localhost.");
+    const session = sessionStorage.getItem('monitoring_session');
+    const password = sessionStorage.getItem('monitoring_key');
+    const encryptedUrl = localStorage.getItem('monitoring_api_url_encrypted');
     
-    // Ambil plaintext URL dari localStorage atau buat default mock URL
-    let testUrl = localStorage.getItem('monitoring_api_url');
-    if (!testUrl) {
-      // Coba dekripsi jika ada url terenkripsi dengan password default "123456"
-      const decrypted = this.decryptUrl("123456");
-      testUrl = decrypted || "https://script.google.com/macros/s/MOCK_URL/exec";
-      localStorage.setItem('monitoring_api_url', testUrl);
+    if (session === 'active' && password && encryptedUrl) {
+      const decrypted = this.decryptUrl(password);
+      if (decrypted) {
+        API._baseUrl = decrypted;
+        this.hideLogin();
+        return;
+      }
     }
     
-    API._baseUrl = testUrl;
-    sessionStorage.setItem('monitoring_session', 'active');
-    sessionStorage.setItem('monitoring_key', '123456'); // Default key
-    sessionStorage.setItem('monitoring_hmac_key', '123456'); // Default HMAC key
-    
-    this.hideLogin();
+    // Clear invalid session if any
+    sessionStorage.clear();
+    this.showLogin();
   },
 
   showLogin() {
+    const encryptedUrl = localStorage.getItem('monitoring_api_url_encrypted');
+    const isSetup = !encryptedUrl;
+    
+    // Toggle setup fields visibility
+    const setupFields = document.getElementById('login-setup-fields');
+    const loginTitle = document.getElementById('login-title');
+    const loginSubtitle = document.getElementById('login-subtitle');
+    const submitBtn = document.getElementById('login-submit-btn');
+    
+    if (isSetup) {
+      if (setupFields) setupFields.classList.remove('hidden');
+      if (loginTitle) loginTitle.textContent = 'Konfigurasi Awal';
+      if (loginSubtitle) loginSubtitle.textContent = 'Hubungkan sistem monitoring bahan ajar dengan database Anda.';
+      if (submitBtn) {
+        submitBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">save</span> Simpan & Hubungkan';
+      }
+    } else {
+      if (setupFields) setupFields.classList.add('hidden');
+      if (loginTitle) loginTitle.textContent = 'Akses Terkunci';
+      if (loginSubtitle) loginSubtitle.textContent = 'Masukkan password Anda untuk memuat data dan mengaktifkan aplikasi.';
+      if (submitBtn) {
+        submitBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">login</span> Masuk Ke Sistem';
+      }
+    }
+    
     document.getElementById('login-overlay').style.display = 'flex';
     document.getElementById('app-container').classList.add('hidden');
   },
