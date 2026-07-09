@@ -243,9 +243,13 @@
 <span class="material-symbols-outlined">settings</span>
 <span class="font-label-md text-label-md">Pengaturan</span>
 </a>
+<a id="nav-data-hapus" onclick="App.switchTab('data-hapus')" class="nav-link text-on-surface-variant hover:bg-surface-container-high mx-2 rounded-lg flex items-center gap-3 px-4 py-3 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">delete_sweep</span>
+<span class="font-label-md text-label-md">Data Hapus</span>
+</a>
 </nav>
 <div class="px-2 mt-auto border-t border-surface-variant pt-4 space-y-1">
-<a class="text-on-surface-variant hover:bg-surface-container-high mx-2 rounded-lg flex items-center gap-3 px-4 py-3 transition-colors" href="#">
+<a id="nav-bantuan" onclick="App.switchTab('bantuan')" class="nav-link text-on-surface-variant hover:bg-surface-container-high mx-2 rounded-lg flex items-center gap-3 px-4 py-3 transition-colors cursor-pointer">
 <span class="material-symbols-outlined">help</span>
 <span class="font-label-md text-label-md">Bantuan</span>
 </a>
@@ -271,7 +275,7 @@
 <button class="bg-surface-container hover:bg-surface-container-high px-4 py-2 rounded-full font-label-md text-label-md text-on-surface transition-colors">
                     PKN STAN
                 </button>
-<button onclick="UI.openModal('modal-setup')" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors" title="Pengaturan Database">
+<button onclick="App.switchTab('pengaturan')" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors" title="Pengaturan Sistem">
 <span class="material-symbols-outlined">settings</span>
 </button>
 <button onclick="Auth.logout()" class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-outline-variant bg-surface hover:bg-error-container hover:text-error hover:border-error/20 transition-all group cursor-pointer" title="Keluar dari sistem">
@@ -637,6 +641,246 @@
             <button onclick="Auth.resetSecuritySettings()" class="w-full py-2.5 bg-error text-on-error hover:bg-primary-container hover:text-on-primary-container rounded-lg font-label-md text-label-md transition-colors flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
                 <span class="material-symbols-outlined text-[18px]">lock_reset</span> Reset Setelan Keamanan
             </button>
+        </div>
+    </div>
+</div>
+
+<!-- =================================================== -->
+<!-- TAB VIEW: DATA HAPUS (OBSOLETE ARCHIVE) -->
+<!-- =================================================== -->
+<div id="view-data-hapus" class="tab-view hidden flex flex-col gap-6 animate-fadeIn w-full">
+    <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex justify-between items-center flex-wrap gap-4">
+        <div>
+            <h3 class="font-headline-md text-headline-md text-on-surface">Data Terhapus (Arsip Obsolete)</h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Daftar bahan ajar yang dihapus dari database utama. Gunakan aksi pulihkan untuk mengembalikannya.</p>
+        </div>
+        <button onclick="App.loadObsoleteData()" class="flex items-center gap-2 px-4 py-2 bg-secondary text-on-secondary hover:bg-secondary-container hover:text-on-secondary-container rounded-lg font-label-md text-label-md transition-all shadow-sm">
+            <span class="material-symbols-outlined text-[18px]">sync</span> Segarkan Arsip
+        </button>
+    </div>
+
+    <!-- Table Section -->
+    <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-2px_rgba(0,0,0,0.05)] border border-surface-variant flex flex-col overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-surface-container-low border-b border-surface-variant text-label-md font-semibold text-on-surface-variant">
+                        <th class="px-6 py-4">Bahan Ajar</th>
+                        <th class="px-6 py-4">Tim Penyusun</th>
+                        <th class="px-6 py-4">Progress</th>
+                        <th class="px-6 py-4 text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="obsolete-table-body" class="divide-y divide-surface-variant font-body-sm text-on-surface">
+                    <tr>
+                        <td colspan="4" class="px-6 py-12 text-center text-on-surface-variant">
+                            <div class="flex flex-col items-center justify-center gap-2">
+                                <div class="spinner" style="width: 24px; height: 24px;"></div>
+                                <p class="font-medium mt-2">Memuat data dari Google Sheets...</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- =================================================== -->
+<!-- TAB VIEW: BANTUAN & FAQ -->
+<!-- =================================================== -->
+<div id="view-bantuan" class="tab-view hidden flex flex-col gap-6 animate-fadeIn w-full">
+    <!-- Hero Section -->
+    <div class="bg-primary/5 rounded-xl p-8 border border-primary/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+            <h3 class="font-headline-md text-headline-md text-primary font-bold">Pusat Bantuan & Panduan</h3>
+            <p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-xl">Pelajari cara mengoperasikan sistem monitoring bahan ajar Simon dengan mudah melalui langkah-langkah di bawah ini.</p>
+        </div>
+        <div class="relative w-full md:w-80">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+            <input type="text" id="help-search" oninput="App.searchHelp()" placeholder="Cari topik bantuan..." class="w-full pl-10 pr-4 py-2.5 bg-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline" />
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- Sidebar Menu Topik Bantuan -->
+        <div class="lg:col-span-1 flex flex-col gap-2">
+            <button onclick="App.switchHelpCategory('quickstart')" id="btn-help-quickstart" class="help-nav-link text-left px-4 py-3 rounded-lg font-label-md text-label-md bg-secondary-container text-on-secondary-container transition-all flex items-center gap-2.5">
+                <span class="material-symbols-outlined">rocket_launch</span> 🚀 Panduan Memulai
+            </button>
+            <button onclick="App.switchHelpCategory('data-entry')" id="btn-help-data-entry" class="help-nav-link text-left px-4 py-3 rounded-lg font-label-md text-label-md hover:bg-surface-container-high text-on-surface-variant transition-all flex items-center gap-2.5">
+                <span class="material-symbols-outlined">edit_note</span> 📝 Kelola Bahan Ajar
+            </button>
+            <button onclick="App.switchHelpCategory('security')" id="btn-help-security" class="help-nav-link text-left px-4 py-3 rounded-lg font-label-md text-label-md hover:bg-surface-container-high text-on-surface-variant transition-all flex items-center gap-2.5">
+                <span class="material-symbols-outlined">shield</span> 🔒 Keamanan & Database
+            </button>
+            <button onclick="App.switchHelpCategory('faq')" id="btn-help-faq" class="help-nav-link text-left px-4 py-3 rounded-lg font-label-md text-label-md hover:bg-surface-container-high text-on-surface-variant transition-all flex items-center gap-2.5">
+                <span class="material-symbols-outlined">quiz</span> ❓ Tanya Jawab (FAQ)
+            </button>
+        </div>
+
+        <!-- Konten Detail Topik Bantuan -->
+        <div class="lg:col-span-3 bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-surface-variant flex flex-col gap-6">
+            <!-- CATEGORY: QUICKSTART -->
+            <div id="help-cat-quickstart" class="help-content-section flex flex-col gap-6">
+                <div>
+                    <h4 class="font-headline-sm text-headline-sm text-primary font-bold">🚀 Panduan Memulai Cepat</h4>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Langkah dasar untuk mengakses aplikasi dan memuat data pertama kali.</p>
+                </div>
+                
+                <div class="flex flex-col gap-4">
+                    <!-- Step 1 -->
+                    <div class="flex gap-4 items-start border-l-2 border-primary/20 pl-4 py-1">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm shrink-0">1</div>
+                        <div>
+                            <h5 class="font-semibold text-on-surface text-sm">Buka Halaman Web</h5>
+                            <p class="text-xs text-on-surface-variant mt-1">Saat pertama kali membuka website ini, Anda akan diarahkan ke halaman <strong>"Konfigurasi Awal"</strong> jika belum pernah melakukan setup di browser tersebut.</p>
+                        </div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="flex gap-4 items-start border-l-2 border-primary/20 pl-4 py-1">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm shrink-0">2</div>
+                        <div>
+                            <h5 class="font-semibold text-on-surface text-sm">Masukkan URL Database</h5>
+                            <p class="text-xs text-on-surface-variant mt-1">Masukkan <strong>Google Apps Script Web App URL</strong> yang didapat dari lembar kerja Google Sheets (tanyakan penanggung jawab database jika Anda bukan pembuatnya).</p>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="flex gap-4 items-start border-l-2 border-primary/20 pl-4 py-1">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm shrink-0">3</div>
+                        <div>
+                            <h5 class="font-semibold text-on-surface text-sm">Masukkan Password & Hubungkan</h5>
+                            <p class="text-xs text-on-surface-variant mt-1">Buat password pengaman (atau masukkan password tim yang sudah disepakati). Tekan tombol <strong>Simpan & Kunci</strong>. Sistem akan mengamankan URL tersebut di browser Anda.</p>
+                        </div>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="flex gap-4 items-start border-l-2 border-primary/20 pl-4 py-1">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm shrink-0">4</div>
+                        <div>
+                            <h5 class="font-semibold text-on-surface text-sm">Mulai Monitoring</h5>
+                            <p class="text-xs text-on-surface-variant mt-1">Aplikasi akan memuat data Google Sheets secara real-time. Anda kini berada di dasbor monitoring utama dan siap bekerja!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATEGORY: DATA ENTRY -->
+            <div id="help-cat-data-entry" class="help-content-section hidden flex flex-col gap-6">
+                <div>
+                    <h4 class="font-headline-sm text-headline-sm text-primary font-bold">📝 Manajemen Bahan Ajar</h4>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Panduan lengkap cara mengelola record, mengedit, dan memahami kolom-kolom data.</p>
+                </div>
+                
+                <div class="flex flex-col gap-5">
+                    <!-- Guide 1 -->
+                    <div class="bg-surface-container rounded-xl p-4 flex flex-col gap-2">
+                        <h5 class="font-semibold text-sm text-on-surface flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px]">add_box</span> Menambahkan Bahan Ajar Baru</h5>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">Klik tombol <strong>"Tambah Data"</strong> di pojok kiri atas bilah navigasi. Isi formulir yang muncul (Judul dan Jenis Bahan Ajar wajib diisi). Kolom persentase pengerjaan akan otomatis terhitung berdasarkan status penulisan dan pengiriman Nota Dinas (ND) Honor.</p>
+                    </div>
+                    <!-- Guide 2 -->
+                    <div class="bg-surface-container rounded-xl p-4 flex flex-col gap-2">
+                        <h5 class="font-semibold text-sm text-on-surface flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px]">edit</span> Mengubah atau Menghapus Data</h5>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">Klik judul bahan ajar di tabel utama untuk membuka Detail Informasi. Di dalam modal detail tersebut, klik <strong>"Edit Data"</strong> untuk mengubah isi atau klik <strong>"Hapus"</strong> untuk menghapusnya secara permanen dari server Google Sheets.</p>
+                    </div>
+                    <!-- Guide 3 -->
+                    <div class="bg-surface-container rounded-xl p-4 flex flex-col gap-2">
+                        <h5 class="font-semibold text-sm text-on-surface flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px]">rule</span> Arti Istilah & Kolom Utama</h5>
+                        <ul class="list-disc pl-4 text-xs text-on-surface-variant flex flex-col gap-1">
+                            <li><strong>Status Penulisan & ND Honor:</strong> Mengukur persentase pengerjaan. Jika penulisan *Selesai* (+50%) dan ND Honor *Kirim/Tanpa Honor* (+50%), total persentase menjadi 100%.</li>
+                            <li><strong>Terbit & SK:</strong> Menyimpan tautan digital (Link Google Drive) dari Surat Keputusan (SK) terkait penerbitan bahan ajar.</li>
+                            <li><strong>Similarity (Kemiripan):</strong> Persentase tingkat kemiripan judul dengan buku lain di database. Bertujuan mendeteksi judul ganda/plagiasi secara otomatis.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATEGORY: SECURITY -->
+            <div id="help-cat-security" class="help-content-section hidden flex flex-col gap-6">
+                <div>
+                    <h4 class="font-headline-sm text-headline-sm text-primary font-bold">🔒 Keamanan & Sinkronisasi Database</h4>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Penjelasan teknologi keamanan kriptografi dan konfigurasi Google Sheets.</p>
+                </div>
+                
+                <div class="flex flex-col gap-4 text-xs text-on-surface-variant leading-relaxed">
+                    <p>Aplikasi ini dirancang sebagai website statis murni yang berjalan 100% di browser pengguna tanpa server backend khusus, namun dilengkapi keamanan sekelas aplikasi perbankan modern:</p>
+                    
+                    <div class="border border-outline-variant p-4 rounded-xl flex flex-col gap-2">
+                        <h5 class="font-semibold text-on-surface text-sm flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-primary">key</span> Kunci Tanda Tangan Digital (SIGNATURE_KEY)</h5>
+                        <p>Setiap request kirim-terima data ditandatangani secara kriptografis menggunakan algoritma `HMAC-SHA256` menggunakan password Anda sebagai kunci. Google Sheets hanya akan memproses data jika tanda tangan digital tersebut valid dan cocok dengan yang terdaftar di Script Properties Google Sheets Anda.</p>
+                    </div>
+
+                    <div class="border border-outline-variant p-4 rounded-xl flex flex-col gap-2">
+                        <h5 class="font-semibold text-on-surface text-sm flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-primary">history</span> Kedaluwarsa Request & Nonce</h5>
+                        <p>Request data dilindungi dari penyadapan (Replay Attacks) dengan masa kedaluwarsa ketat <strong>60 detik</strong> dan sistem `nonce` unik. Setiap request hanya berlaku sekali pakai dan langsung kedaluwarsa secara otomatis.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATEGORY: FAQ -->
+            <div id="help-cat-faq" class="help-content-section hidden flex flex-col gap-4">
+                <div>
+                    <h4 class="font-headline-sm text-headline-sm text-primary font-bold">❓ Tanya Jawab Terpopuler (FAQ)</h4>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Jawaban cepat atas pertanyaan atau kendala operasional yang sering ditemui.</p>
+                </div>
+                
+                <div class="faq-accordion flex flex-col gap-3 mt-2">
+                    <!-- Q1 -->
+                    <div class="faq-item border border-outline-variant rounded-xl overflow-hidden bg-surface transition-all">
+                        <button onclick="App.toggleFaq(this)" class="w-full px-5 py-4 text-left font-semibold text-sm text-on-surface flex justify-between items-center hover:bg-surface-container-low transition-colors">
+                            <span>Buku Ajar saya similarity-nya 68%, bagaimana cara mengetahui mirip dengan buku apa?</span>
+                            <span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+                        </button>
+                        <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 bg-surface-container-lowest">
+                            <p class="p-5 text-xs text-on-surface-variant leading-relaxed">
+                                Cukup <strong>arahkan kursor (hover)</strong> Anda di atas persentase similarity (misal: `68%`) di tabel utama. Sebuah balon petunjuk (*tooltip*) akan muncul menunjukkan judul buku pembanding yang dinilai mirip. Selain itu, Anda juga dapat mengklik judul buku untuk membuka Detail Bahan Ajar, di mana nama buku yang mirip akan tertulis jelas di bawah skor similarity.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Q2 -->
+                    <div class="faq-item border border-outline-variant rounded-xl overflow-hidden bg-surface transition-all">
+                        <button onclick="App.toggleFaq(this)" class="w-full px-5 py-4 text-left font-semibold text-sm text-on-surface flex justify-between items-center hover:bg-surface-container-low transition-colors">
+                            <span>Kenapa muncul error "SIGNATURE_KEY tidak terkonfigurasi"?</span>
+                            <span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+                        </button>
+                        <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 bg-surface-container-lowest">
+                            <p class="p-5 text-xs text-on-surface-variant leading-relaxed">
+                                Ini berarti Google Apps Script server Anda belum mengetahui password keamanan yang Anda gunakan. 
+                                <strong>Cara mengatasi:</strong> 
+                                1. Klik tautan <strong>"Reset Konfigurasi Aplikasi"</strong> di bawah layar login.
+                                2. Lakukan setup awal kembali, lalu <strong>salin (copy) password</strong> Anda.
+                                3. Masuk ke halaman Apps Script Google Sheets Anda, pilih **Project Settings** (ikon roda gigi), tambahkan Script Property baru bernama <code class="bg-surface px-1 py-0.5 rounded font-mono text-[11px]">SIGNATURE_KEY</code> dan tempelkan password tersebut sebagai nilainya. Simpan dan deploy ulang web app Anda.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Q3 -->
+                    <div class="faq-item border border-outline-variant rounded-xl overflow-hidden bg-surface transition-all">
+                        <button onclick="App.toggleFaq(this)" class="w-full px-5 py-4 text-left font-semibold text-sm text-on-surface flex justify-between items-center hover:bg-surface-container-low transition-colors">
+                            <span>Bagaimana cara mengakses website ini dari laptop/HP yang berbeda?</span>
+                            <span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+                        </button>
+                        <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 bg-surface-container-lowest">
+                            <p class="p-5 text-xs text-on-surface-variant leading-relaxed">
+                                Sangat mudah! Saat membuka website pertama kali di laptop atau HP baru:
+                                1. Masukkan <strong>URL Google Apps Script Web App</strong> yang sama dengan database Anda.
+                                2. Masukkan <strong>Password</strong> yang sama dengan yang sudah terdaftar di server.
+                                3. Browser Anda akan langsung terhubung secara otomatis tanpa perlu mengubah setelan apa pun di Google Sheets Anda.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Q4 -->
+                    <div class="faq-item border border-outline-variant rounded-xl overflow-hidden bg-surface transition-all">
+                        <button onclick="App.toggleFaq(this)" class="w-full px-5 py-4 text-left font-semibold text-sm text-on-surface flex justify-between items-center hover:bg-surface-container-low transition-colors">
+                            <span>Bagaimana cara mengekspor data bahan ajar ke Excel?</span>
+                            <span class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+                        </button>
+                        <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 bg-surface-container-lowest">
+                            <p class="p-5 text-xs text-on-surface-variant leading-relaxed">
+                                Buka tab <strong>"Bahan Ajar"</strong> atau dasbor utama, lalu klik tombol <strong>"Ekspor"</strong> (ikon unduh) yang terletak di kanan atas tabel. Sistem akan otomatis mendownload berkas Excel berisi seluruh data bahan ajar yang sedang ditampilkan, lengkap dengan status, persentase, total honor, dan daftar SK.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -1121,29 +1365,7 @@
     </div>
 </div>
 
-<!-- MODAL SETUP -->
-<div id="modal-setup" class="modal">
-    <div class="modal-content bg-surface-container-lowest max-w-[560px] rounded-xl shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1),0px_8px_10px_-6px_rgba(0,0,0,0.1)] overflow-hidden">
-        <header class="flex justify-between items-center px-6 py-4 border-b border-surface-variant bg-surface-bright">
-            <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-on-surface-variant">settings</span>
-                <h2 class="font-headline-sm text-headline-sm text-on-surface">Konfigurasi API</h2>
-            </div>
-            <button onclick="UI.closeModal('modal-setup')" class="text-on-surface-variant hover:bg-surface-container p-2 rounded-full transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
-        </header>
-        <div class="p-6">
-            <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Hubungkan aplikasi ini dengan Google Sheets melalui Google Apps Script.</p>
-            <div class="flex flex-col gap-2 mb-4">
-                <label class="font-label-md text-label-md text-on-surface">URL Google Apps Script Web App</label>
-                <input type="url" id="setup-url-input" class="w-full rounded-lg border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/20 bg-surface-container-lowest font-body-md text-body-md text-on-surface px-4 py-3 shadow-sm" placeholder="https://script.google.com/macros/s/.../exec">
-            </div>
-        </div>
-        <footer class="px-6 py-4 border-t border-surface-variant bg-surface-bright flex justify-end gap-3">
-            <button onclick="UI.closeModal('modal-setup')" class="px-6 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-primary font-label-md hover:bg-surface transition-colors shadow-sm">Batal</button>
-            <button onclick="App.saveSetup()" class="px-6 py-2.5 rounded-lg bg-primary text-on-primary font-label-md hover:bg-primary-container transition-colors shadow-sm">Simpan</button>
-        </footer>
-    </div>
-</div>
+
 
 <!-- MODAL DELETE -->
 <div id="modal-delete" class="modal">
@@ -1158,7 +1380,7 @@
         <div class="p-6 text-center">
             <div class="w-16 h-16 bg-error-container text-error rounded-full flex items-center justify-center mx-auto mb-4"><span class="material-symbols-outlined text-[32px]">delete</span></div>
             <h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Hapus Bahan Ajar?</h3>
-            <p class="font-body-md text-body-md text-on-surface-variant">Anda yakin ingin menghapus <span id="delete-title" class="font-bold text-on-surface"></span>? Tindakan ini tidak dapat dibatalkan.</p>
+            <p class="font-body-md text-body-md text-on-surface-variant">Anda yakin ingin menghapus <span id="delete-title" class="font-bold text-on-surface"></span>? Data yang dihapus akan dipindahkan ke sheet <strong>"obselete"</strong>.</p>
         </div>
         <footer class="px-6 py-4 border-t border-surface-variant bg-surface-bright flex justify-end gap-3">
             <button onclick="UI.closeModal('modal-delete')" class="px-6 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-primary font-label-md hover:bg-surface transition-colors shadow-sm">Batal</button>
@@ -1252,10 +1474,10 @@
             <div class="bg-surface-container border border-outline-variant p-3.5 rounded-lg text-xs text-on-surface-variant flex flex-col gap-1.5 leading-relaxed">
                 <span class="font-semibold text-on-surface">Instruksi Apps Script:</span>
                 <span>1. Buka Google Sheet &gt; Extensions &gt; Apps Script.</span>
-                <span>2. Buka **Project Settings** (ikon roda gigi di kiri).</span>
-                <span>3. Klik **Add Script Property** di bawah halaman.</span>
+                <span>2. Buka <strong>Project Settings</strong> (ikon roda gigi di kiri).</span>
+                <span>3. Klik <strong>Add Script Property</strong> di bawah halaman.</span>
                 <span>4. Set nama property: <code class="bg-surface px-1 py-0.5 rounded font-mono text-[11px]">SIGNATURE_KEY</code></span>
-                <span>5. Paste **Password Anda** (kunci di atas) sebagai value, klik **Save**.</span>
+                <span>5. Paste <strong>Password Anda</strong> (kunci di atas) sebagai value, klik <strong>Save</strong>.</span>
             </div>
 
             <button onclick="Auth.completeSetup()" class="w-full bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-all py-3 rounded-lg font-semibold shadow-md flex items-center justify-center gap-2">

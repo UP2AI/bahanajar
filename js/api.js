@@ -173,4 +173,50 @@ const API = {
       throw error;
     }
   },
+
+  /**
+   * Fetch all data from "obselete" sheet
+   */
+  async fetchObsolete() {
+    const url = this.getUrl();
+    if (!url) throw new Error('API URL belum dikonfigurasi');
+
+    const { timestamp, nonce, signature } = this.signRequest('readObsolete');
+
+    try {
+      const response = await fetch(`${url}?action=readObsolete&timestamp=${timestamp}&nonce=${nonce}&signature=${signature}`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const result = await response.json();
+      if (!result.success) throw new Error(result.error || 'Gagal mengambil data obsolete');
+      return result.data || [];
+    } catch (error) {
+      console.error('API fetchObsolete error:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Restore record by ID from obselete to main sheet
+   */
+  async restore(id) {
+    const url = this.getUrl();
+    if (!url) throw new Error('API URL belum dikonfigurasi');
+
+    const { timestamp, nonce, signature } = this.signRequest('restore', id);
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'restore', id, timestamp, nonce, signature }),
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const result = await response.json();
+      if (!result.success) throw new Error(result.error || 'Gagal memulihkan data');
+      return result;
+    } catch (error) {
+      console.error('API restore error:', error);
+      throw error;
+    }
+  },
 };

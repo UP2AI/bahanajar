@@ -5,36 +5,25 @@
  */
 
 const Auth = {
-  // Session validation
+  // Session validation (TEMPORARILY BYPASSED FOR LOCALHOST TESTING)
   init() {
-    const session = sessionStorage.getItem('monitoring_session');
-    const encryptedUrl = localStorage.getItem('monitoring_api_url_encrypted');
-
-    if (!encryptedUrl) {
-      // First time run setup
-      const legacyUrl = localStorage.getItem('monitoring_api_url') || '';
-      document.getElementById('login-title').textContent = 'Konfigurasi Awal';
-      document.getElementById('login-subtitle').textContent = 'Masukkan Google Apps Script Web App URL dan buat password pengaman.';
-      document.getElementById('login-setup-fields').classList.remove('hidden');
-      if (legacyUrl) {
-        document.getElementById('login-setup-url').value = legacyUrl;
-      }
-      
-      document.getElementById('login-submit-btn').innerHTML = '<span class="material-symbols-outlined text-[20px]">save</span> Simpan & Kunci';
-      this.showLogin();
-      return;
+    console.log("Login di-nonaktifkan untuk pengujian localhost.");
+    
+    // Ambil plaintext URL dari localStorage atau buat default mock URL
+    let testUrl = localStorage.getItem('monitoring_api_url');
+    if (!testUrl) {
+      // Coba dekripsi jika ada url terenkripsi dengan password default "123456"
+      const decrypted = this.decryptUrl("123456");
+      testUrl = decrypted || "https://script.google.com/macros/s/MOCK_URL/exec";
+      localStorage.setItem('monitoring_api_url', testUrl);
     }
-
-    if (session === 'active') {
-      const decrypted = this.decryptUrl(sessionStorage.getItem('monitoring_key'));
-      if (decrypted) {
-        API._baseUrl = decrypted;
-        this.hideLogin();
-        return;
-      }
-    }
-
-    this.showLogin();
+    
+    API._baseUrl = testUrl;
+    sessionStorage.setItem('monitoring_session', 'active');
+    sessionStorage.setItem('monitoring_key', '123456'); // Default key
+    sessionStorage.setItem('monitoring_hmac_key', '123456'); // Default HMAC key
+    
+    this.hideLogin();
   },
 
   showLogin() {

@@ -32,6 +32,7 @@ const App = {
     this.checkConfig();
     this.initResizers();
     this.initAutoSync();
+    await this.loadData();
   },
 
   checkConfig() {
@@ -967,12 +968,18 @@ const App = {
 
   async handleDelete() {
     if (!this.editingId) return;
+    
+    // Popup native confirm
+    if (!confirm('Apakah Anda benar-benar yakin ingin menghapus data bahan ajar ini? Data yang dihapus akan dipindahkan ke sheet "obselete".')) {
+      return;
+    }
+
     const btn = document.getElementById('delete-submit-btn');
     if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spinner" style="width:14px;height:14px;border-width:2px;"></div> Menghapus...'; }
 
     try {
       await API.delete(this.editingId);
-      UI.showToast('Data berhasil dihapus', 'success');
+      UI.showToast('Data berhasil dihapus dan diarsipkan', 'success');
       UI.closeModal('modal-delete');
       this.editingId = null;
       await this.loadData();
@@ -984,28 +991,10 @@ const App = {
   },
 
   // ==================
-  // SETUP
+  // REFRESH DATA
   // ==================
 
-  openSetupModal() {
-    const input = document.getElementById('setup-url-input');
-    if (input) input.value = API.getUrl() || '';
-    UI.openModal('modal-setup');
-  },
-
-  async saveSetup() {
-    const url = document.getElementById('setup-url-input')?.value?.trim();
-    if (!url) { UI.showToast('Masukkan URL Google Apps Script', 'warning'); return; }
-    if (!url.startsWith('https://script.google.com/')) { UI.showToast('URL harus dari script.google.com', 'warning'); return; }
-    API.setUrl(url);
-    UI.closeModal('modal-setup');
-    this.checkConfig();
-    UI.showToast('URL disimpan! Memuat data...', 'success');
-    await this.loadData();
-  },
-
   async refreshData() {
-    if (!API.isConfigured()) { this.openSetupModal(); return; }
     await this.loadData();
     UI.showToast('Data berhasil di-refresh', 'info');
   },
@@ -1064,6 +1053,8 @@ const App = {
       this.renderTimPenulis();
     } else if (tabId === 'pengaturan') {
       this.renderSettings();
+    } else if (tabId === 'data-hapus') {
+      this.loadObsoleteData();
     }
   },
 
@@ -1697,4 +1688,197 @@ const App = {
       this.loadData();
     }
   },
+
+  // ==================
+  // HELP & FAQ
+  // ==================
+
+  switchHelpCategory(catId) {
+    // Hide all sections
+    document.querySelectorAll('.help-content-section').forEach(section => {
+      section.classList.add('hidden');
+    });
+
+    // Show active section
+    const activeSection = document.getElementById(`help-cat-${catId}`);
+    if (activeSection) {
+      activeSection.classList.remove('hidden');
+    }
+
+    // Reset button states
+    document.querySelectorAll('.help-nav-link').forEach(btn => {
+      btn.className = 'help-nav-link text-left px-4 py-3 rounded-lg font-label-md text-label-md hover:bg-surface-container-high text-on-surface-variant transition-all flex items-center gap-2.5';
+    });
+
+    // Set active button state
+    const activeBtn = document.getElementById(`btn-help-${catId}`);
+    if (activeBtn) {
+      activeBtn.className = 'help-nav-link text-left px-4 py-3 rounded-lg font-label-md text-label-md bg-secondary-container text-on-secondary-container transition-all flex items-center gap-2.5';
+    }
+  },
+
+  toggleFaq(btn) {
+    const parent = btn.closest('.faq-item');
+    const answer = parent.querySelector('.faq-answer');
+    const icon = btn.querySelector('.material-symbols-outlined');
+    
+    // Close other FAQs
+    document.querySelectorAll('.faq-item').forEach(item => {
+      if (item !== parent) {
+        item.querySelector('.faq-answer').style.maxHeight = null;
+        item.querySelector('.material-symbols-outlined').style.transform = null;
+        item.classList.remove('border-primary/30', 'bg-primary/5');
+      }
+    });
+
+    if (answer.style.maxHeight) {
+      answer.style.maxHeight = null;
+      icon.style.transform = null;
+      parent.classList.remove('border-primary/30', 'bg-primary/5');
+    } else {
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+      icon.style.transform = 'rotate(180deg)';
+      parent.classList.add('border-primary/30', 'bg-primary/5');
+    }
+  },
+
+  searchHelp() {
+    const query = (document.getElementById('help-search')?.value || '').toLowerCase().trim();
+    
+    if (query.length > 0) {
+      // Auto switch to FAQ category if user starts typing a query
+      this.switchHelpCategory('faq');
+
+      document.querySelectorAll('.faq-item').forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(query)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    } else {
+      // Reset all items visibility
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.style.display = 'block';
+      });
+    }
+  },
+
+  async loadObsoleteData() {
+    const tbody = document.getElementById('obsolete-table-body');
+    if (tbody) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" class="px-6 py-12 text-center text-on-surface-variant">
+            <div class="flex flex-col items-center justify-center gap-2">
+              <div class="spinner" style="width: 24px; height: 24px;"></div>
+              <p class="font-medium mt-2">Memuat data obsolete...</p>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+
+    try {
+      this.obsoleteData = await API.fetchObsolete();
+      this.renderObsoleteTable();
+    } catch (e) {
+      console.error('loadObsoleteData error:', e);
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" class="px-6 py-8 text-center text-error">
+              Gagal memuat data: ${e.message}
+            </td>
+          </tr>
+        `;
+      }
+    }
+  },
+
+  renderObsoleteTable() {
+    const tbody = document.getElementById('obsolete-table-body');
+    if (!tbody) return;
+
+    if (!this.obsoleteData || this.obsoleteData.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" class="px-6 py-12 text-center text-on-surface-variant">
+            <div class="flex flex-col items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-[48px] text-outline">archive</span>
+              <p class="font-medium">Tidak ada data obsolete (arsip kosong).</p>
+            </div>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    const sorted = [...this.obsoleteData].reverse();
+
+    tbody.innerHTML = sorted.map(item => {
+      const progress = parseInt(item.PROGRESS) || 0;
+      let badgeColor = 'bg-surface-variant text-on-surface-variant';
+      if (progress === 100) badgeColor = 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300';
+      else if (progress > 0) badgeColor = 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300';
+
+      const prodiBadges = (item.PRODI || '')
+        .split(',')
+        .map(p => p.trim())
+        .filter(p => p)
+        .map(p => `<span class="bg-primary/5 text-primary text-[10px] px-1.5 py-0.5 rounded border border-primary/10 font-medium">${Utils.escapeHtml(p)}</span>`)
+        .join(' ');
+
+      return `
+        <tr class="hover:bg-surface-container-lowest/50 transition-colors">
+          <td class="px-6 py-4">
+            <div class="flex flex-col gap-1">
+              <span class="font-semibold text-on-surface leading-tight text-sm">${Utils.escapeHtml(item.JUDUL)}</span>
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="bg-secondary/10 text-secondary text-[10px] px-1.5 py-0.5 rounded font-medium">${Utils.escapeHtml(item.JENIS_BAHAN_AJAR || '-')}</span>
+                ${prodiBadges}
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4 text-xs">
+            <div class="flex flex-col gap-0.5 text-on-surface-variant">
+              <div><strong class="text-on-surface">Penyusun:</strong> ${Utils.escapeHtml(item.TIM_PENYUSUN || '-')}</div>
+              <div><strong class="text-on-surface">Eksternal:</strong> ${Utils.escapeHtml(item.TIM_PENYUSUN_EKSTERNAL_BPPK || '-')}</div>
+            </div>
+          </td>
+          <td class="px-6 py-4">
+            <div class="flex items-center gap-3">
+              <span class="font-bold text-xs ${badgeColor} px-2 py-0.5 rounded-full">${progress}%</span>
+              <div class="w-16 bg-surface-container-high rounded-full h-1.5 overflow-hidden hidden md:block">
+                <div class="bg-primary h-full rounded-full" style="width: ${progress}%"></div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4 text-right">
+            <button onclick="App.handleRestore('${Utils.escapeHtml(item.ID)}')" class="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-600 text-white hover:bg-emerald-700 active:scale-[0.98] rounded-lg font-label-sm text-xs transition-all shadow-sm cursor-pointer">
+              <span class="material-symbols-outlined text-[14px]">settings_backup_restore</span> Pulihkan
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  },
+
+  async handleRestore(id) {
+    if (!confirm('Apakah Anda yakin ingin memulihkan bahan ajar ini kembali ke database aktif?')) {
+      return;
+    }
+
+    try {
+      UI.showToast('Memulihkan data...', 'info');
+      await API.restore(id);
+      UI.showToast('Data berhasil dipulihkan', 'success');
+      await this.loadObsoleteData();
+      await this.loadData();
+    } catch (e) {
+      console.error('handleRestore error:', e);
+      UI.showToast('Gagal memulihkan data: ' + e.message, 'error');
+    }
+  }
 };
